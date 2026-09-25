@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# data and run outputs (NHTSA media is never committed; see docs/DATA_CARD.md)
+/data/
+/outputs/
+/reports/
+/wandb/
+*.wmv
+*.avi
+*.mp4
+
+.DS_Store
+.ipynb_checkpoints/

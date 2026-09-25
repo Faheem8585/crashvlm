@@ -1,0 +1,55 @@
+# Data pipeline config (M1). Override on the CLI, e.g.
+#   uv run python scripts/prepare_clips.py clips.limit=4 clips.stride=2
+seed: 42
+
+paths:
+  root: ${oc.env:CRASHVLM_DATA,data}
+  api_cache: ${paths.root}/raw/api
+  interim: ${paths.root}/interim
+  processed: ${paths.root}/processed
+  tmp: ${paths.root}/tmp
+  reports: reports
+
+catalog:
+  test_types: [NEW CAR ASSESSMENT TEST, OPTIONAL NEW CAR ASSESSMENT TEST]
+  configs: [VTB, ITV, VTP]   # frontal barrier, side MDB, side pole
+  min_year: 2012
+  workers: 8
+
+selection:
+  per_config: { VTB: 40, ITV: 30, VTP: 30 }
+  split: { train: 0.6, val: 0.15, test: 0.25 }
+  iaa_tests: 15              # drawn from the test split, annotated twice
+  frozen: configs/splits/selection_v1.csv  # written on first run, then reused
+
+clips:
+  roles: [exterior, occupant]  # occupant = camera on the driver dummy
+  splits: [train, val, test]
+  stride: 4                  # keep every 4th frame (~4 ms at 1000 fps)
+  max_side: 512
+  jpeg_quality: 90
+  analysis_every: 25         # full-res frames sampled for overlay analysis
+  max_file_mb: 200
+  keep_raw: false            # delete the source video after extraction (disk budget)
+  limit: null                # process only the first N clips (smoke runs)
+
+overlay:
+  band_max_frac: 0.4          # KARCO side panels are ~1/3 of the frame width
+  band_uniform_frac: 0.6
+  band_tol: 12
+  text_persist_frac: 0.8
+  text_max_drift: 0.01
+  text_edge_frac: 0.12         # overlays live near frame edges ...
+  text_edge_persist_frac: 0.3  # ... and OCR misses them in over-exposed frames
+  text_margin: 6
+  fill: 127
+
+timing:
+  convention_t0_frame: 50    # NCAP high-speed clips start at -50 ms ...
+  convention_ms_per_frame: 1.0  # ... recorded at 1000 fps (verified by OCR per clip)
+
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  job:
+    chdir: false
