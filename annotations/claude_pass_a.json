@@ -53,12 +53,12 @@
    "view_usable": true,
    "frontal_airbag_deployed": "yes",
    "curtain_airbag_deployed": "not_visible",
-   "a_pillar_deformation": "none",
+   "a_pillar_deformation": "minor",
    "windshield_damage": "not_visible",
    "door_opened": "no",
    "fire_or_fluid_leak": "no",
    "visual_severity": "high",
-   "notes": "very short front end; crush reaches the wheel arch"
+   "notes": "very short front end; crush reaches the wheel arch; adjudicated vs Sonnet: A-pillar base buckles from +46 ms -> minor"
   }
  },
  "10039_occupant": {

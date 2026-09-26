@@ -1,0 +1,1014 @@
+{
+ "10028_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10028_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "head_contact": {
+    "t_ms": 30,
+    "onset_visible": false,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10039_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -10,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "door_opens": 22,
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "severe",
+   "windshield_damage": "not_visible",
+   "door_opened": "yes",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10039_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -10,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 14,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 22,
+    "onset_visible": false,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10168_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10168_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "head_contact": {
+    "t_ms": 38,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10175_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10175_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "head_contact": {
+    "t_ms": 22,
+    "onset_visible": false,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10185_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10185_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "head_contact": {
+    "t_ms": 22,
+    "onset_visible": false,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10186_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 6,
+    "onset_visible": true
+   },
+   "max_deformation": 62
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "overhead view, limited cabin visibility"
+  }
+ },
+ "10186_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 6,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": true
+   },
+   "side_glass_break_onset": {
+    "t_ms": 38,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 46,
+    "onset_visible": false,
+    "surface": "structure"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "heavy glass fragmentation obscures later frames"
+  }
+ },
+ "10554_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": {
+    "t_ms": 62,
+    "onset_visible": true
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "overhead view, pole contact point hidden under body"
+  }
+ },
+ "10554_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -1,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": {
+    "t_ms": 39,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 39,
+    "onset_visible": false,
+    "surface": "structure"
+   }
+  },
+  "summary": {
+   "view_usable": false,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "heavy glass fragmentation obscures most of clip; grey object at +31ms unclear (airbag vs intruding structure)"
+  }
+ },
+ "10661_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": {
+    "t_ms": 54,
+    "onset_visible": true
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "overhead view, pole contact hidden under body"
+  }
+ },
+ "10661_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 38,
+    "onset_visible": true
+   },
+   "side_glass_break_onset": {
+    "t_ms": 46,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 46,
+    "onset_visible": false,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": false,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "extreme close-up framing, identity of teal object at +38ms uncertain (airbag vs trim)"
+  }
+ },
+ "10671_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -1,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 23,
+    "onset_visible": false
+   },
+   "max_deformation": 95
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10671_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "head_contact": {
+    "t_ms": 38,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10690_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "minor",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10690_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 38,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10705_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   }
+  },
+  "summary": {
+   "view_usable": false,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "camera appears mounted on/near the barrier; target vehicle almost entirely obscured throughout the clip"
+  }
+ },
+ "10723_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -3,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": {
+    "t_ms": 53,
+    "onset_visible": true
+   },
+   "max_deformation": 93
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10723_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -3,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": {
+    "t_ms": 46,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 46,
+    "onset_visible": false,
+    "surface": "structure"
+   }
+  },
+  "summary": {
+   "view_usable": false,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "airbag type near head at +22ms unclear (side torso vs curtain); heavy glass fragmentation obscures most of clip"
+  }
+ },
+ "10738_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -10,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": {
+    "t_ms": 30,
+    "onset_visible": true
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10738_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -10,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 14,
+    "onset_visible": true
+   },
+   "windshield_crack_onset": {
+    "t_ms": 38,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 30,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": false,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "shattered",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "windshield crack and airbag deployment are near-simultaneous, hard to separate exact onset order"
+  }
+ },
+ "10768_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10768_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "head_contact": {
+    "t_ms": 30,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10818_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 6,
+    "onset_visible": true
+   },
+   "max_deformation": 78
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "overhead view, limited cabin visibility"
+  }
+ },
+ "10818_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 6,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "head_contact": {
+    "t_ms": 38,
+    "onset_visible": false,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "bright glare partially obscures cabin in later frames"
+  }
+ },
+ "10835_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 6,
+    "onset_visible": true
+   },
+   "max_deformation": 78
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "overhead view, limited cabin visibility"
+  }
+ },
+ "10835_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 6,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 94,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "head contact timing with airbag uncertain"
+  }
+ },
+ "10960_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -1,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": {
+    "t_ms": 47,
+    "onset_visible": true
+   },
+   "max_deformation": 87
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10960_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -1,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": {
+    "t_ms": 47,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 47,
+    "onset_visible": false,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": false,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "pillow object at +39ms unclear (airbag vs trim); heavy glass fragmentation obscures most of clip"
+  }
+ },
+ "10961_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 27,
+    "onset_visible": false
+   },
+   "max_deformation": 99
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10961_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 38,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "10962_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 38,
+    "onset_visible": false
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "10962_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "head_contact": {
+    "t_ms": 30,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": ""
+  }
+ },
+ "8204_exterior": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "max_deformation": 94
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "not_visible",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "8204_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": true
+   },
+   "head_contact": {
+    "t_ms": 54,
+    "onset_visible": true,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "not_visible",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ }
+}
