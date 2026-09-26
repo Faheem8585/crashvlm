@@ -4001,5 +4001,95 @@
    "visual_severity": "high",
    "notes": "camera through windshield; camera mount shifts from +86 ms (view lost)"
   }
+ },
+ "9761_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2016 Lexus RX; curtain fills side window from +38 ms"
+  }
+ },
+ "9761_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 30,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "rear-quarter onboard view; frontal and curtain both from +30 ms; airbag smoke later"
+  }
+ },
+ "9961_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2016 Buick Envision; curtain fills side window from +38 ms"
+  }
+ },
+ "9961_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 22,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "rear-quarter onboard view; curtain from +38 ms"
+  }
  }
 }
