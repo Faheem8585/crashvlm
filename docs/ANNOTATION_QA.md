@@ -29,3 +29,42 @@ or fully occluded for the whole clip: the side-window line for `curtain_airbag_d
 windshield for `windshield_damage`, the A-pillar for `a_pillar_deformation`, a door edge for
 `door_opened`. If that region is visible, answer yes/no (or none/minor/…) even when the answer
 is "nothing happened".
+
+## Check 2: blind Sonnet annotator, next 36 clips (after guideline v1.1)
+
+Report: `reports/annotation/claude_vs_sonnet_batch2.md`. Same set-up as check 1; the second
+annotator received the v1.1 visibility rule.
+
+### Findings
+
+- **Timed events stay reliable.** Impact onset, windshield crack and side glass break agree when
+  both annotators mark them, and airbag onset timing is within 16 ms whenever both mark it.
+- **Airbag presence in exterior frontal views is the main presence disagreement.** The primary
+  annotator marks the frontal airbag when it is seen *through the side window*
+  (`onset_visible: false`); the second annotator usually leaves it out. Both readings follow the
+  guideline. **Rule for evaluation:** airbag onset *timing* is scored on occupant views only;
+  exterior-view airbag tags count only for presence.
+- **The v1.1 visibility rule did not fix three summary attributes.** `windshield_damage` and
+  `a_pillar_deformation` disagreements are still mostly "none" vs "not_visible". From a
+  side-on exterior camera the windshield and A-pillar are seen at a grazing angle, and the two
+  annotators draw that line differently. `visual_severity` (low/medium/high) is subjective
+  (kappa about 0.2 in both checks).
+- **Adjudicated on the sheets:** 14468 occupant (side airbag clearly visible from +22 ms,
+  primary kept) and 14394 exterior (the "door opening" is the side mirror folding at ~+70 ms,
+  so no door event; primary kept).
+
+### Consequence: label reliability tiers used from M3 on
+
+| Tier | Labels | Use |
+|---|---|---|
+| A (headline metrics) | `impact_onset`, `airbag_deploy_start` (occupant views), `head_contact`, `windshield_crack_onset`, `side_glass_break_onset`, `fire_or_fluid_leak`, `door_opened` | Training targets and headline evaluation |
+| B (secondary) | `frontal_airbag_deployed`, `curtain_airbag_deployed`, `view_usable`, airbag presence in exterior views | Reported separately, with the agreement numbers next to them |
+| C (not used as ground truth) | `max_deformation` (to be replaced by accelerometer data), `windshield_damage`, `a_pillar_deformation`, `visual_severity` | Descriptive only; `visual_severity` is compared with measured crush/HIC as an exploratory analysis, never as a target |
+
+## Time-axis corrections found while labelling
+
+Labelling test 8660 showed the impact at "+57 ms". The cause was a bug in reading the burned-in
+time: a frame counter was taken as the time series (fix `b6418a6`). Some Calspan clips carry
+no time at all, only "T0: <frame>" (fix `aa0074a`). Six clips were reprocessed; one existing
+label (7639 exterior) was moved to the corrected axis. All 200 clips now carry
+`code_version` ≥ `b6418a6`.
