@@ -4091,5 +4091,44 @@
    "visual_severity": "medium",
    "notes": "rear-quarter onboard view; curtain from +38 ms"
   }
+ },
+ "9967_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "windshield_crack_onset": 38,
+   "max_deformation": 86
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "cracked",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "pole at driver door; roof buckles"
+  }
+ },
+ "9967_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "windshield_crack_onset": 38
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "shattered",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "camera through windshield; view lost after +38 ms, head contact not visible"
+  }
  }
 }
