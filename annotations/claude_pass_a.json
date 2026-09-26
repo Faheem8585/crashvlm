@@ -3656,5 +3656,91 @@
    "visual_severity": "high",
    "notes": "dense airbag smoke fills cabin from +30 ms; head contact not visible (smoke, not fire)"
   }
+ },
+ "9077_exterior": {
+  "events": {
+   "impact_onset": 0,
+   "airbag_deploy_start": {
+    "t_ms": 24,
+    "onset_visible": false
+   },
+   "max_deformation": 72
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2015 RAV4; curtain fills side window from +32 ms; time axis corrected"
+  }
+ },
+ "9077_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 22,
+   "head_contact": {
+    "t_ms": 54,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "rear onboard view"
+  }
+ },
+ "9324_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "close overhead of MDB contact; black SUV"
+  }
+ },
+ "9324_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "long curtain along struck side"
+  }
  }
 }
