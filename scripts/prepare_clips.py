@@ -2,6 +2,7 @@
 
     uv run python scripts/prepare_clips.py clips.limit=4          # smoke run
     uv run python scripts/prepare_clips.py                        # full selection (Colab)
+    uv run python scripts/prepare_clips.py clips.shard=0 clips.num_shards=3   # parallel workers
 
 Resumable: clips with an existing meta.json are skipped. Failures go to errors.json.
 """
@@ -43,10 +44,14 @@ def main(cfg: DictConfig) -> None:
                 jobs.append(q.pop(0))
     if cfg.clips.limit:
         jobs = jobs[: cfg.clips.limit]
+    shard, n_shards = cfg.clips.shard, cfg.clips.num_shards
+    if n_shards > 1:  # parallel download workers on disjoint job subsets
+        jobs = jobs[shard::n_shards]
 
     reader = RapidOCRReader()
     clips_root.mkdir(parents=True, exist_ok=True)
-    err_path = Path(cfg.paths.processed) / "errors.json"
+    suffix = f".shard{shard}" if n_shards > 1 else ""
+    err_path = Path(cfg.paths.processed) / f"errors{suffix}.json"
     errors = {}
     for test_no, role, url, name in tqdm(jobs, desc="clips"):
         if (clips_root / clip_id(test_no, role) / "meta.json").exists():
@@ -58,6 +63,9 @@ def main(cfg: DictConfig) -> None:
             err_path.write_text(json.dumps(errors, indent=1))
 
     err_path.write_text(json.dumps(errors, indent=1))
+    if n_shards > 1:
+        print(f"shard {shard}/{n_shards}: {len(jobs)} jobs, errors: {len(errors)}")
+        return  # a final unsharded run retries leftovers and writes the manifest
     man = build_manifest(clips_root, sel)
     man.to_parquet(Path(cfg.paths.processed) / "manifest.parquet", index=False)
     print(f"clips ready: {len(man)} / {len(jobs)} requested, errors: {len(errors)} -> {err_path}")

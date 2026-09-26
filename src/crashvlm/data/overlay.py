@@ -375,13 +375,16 @@ def indicator_boxes(
     min_area: int = 100,
     max_area_frac: float = 0.02,
     min_fill: float = 0.5,
+    max_transition: int = 2,
 ) -> list[Box]:
     """Boxes around T0 indicator lamps (KARCO burns a red dot that turns green at t = 0).
 
     A lamp pixel is pure red in every frame before one switch point and pure green in every frame
-    after it (``frames`` in time order). Scene noise or a car that is merely red never shows that
-    single, clean red -> green switch. Components must also be compact (``min_fill`` of their
-    bounding box) and small (``max_area_frac`` of the frame).
+    after it (``frames`` in time order), allowing up to ``max_transition`` sampled frames in
+    between that are neither (the frame that catches the lamp mid-switch at t = 0). Scene noise
+    or a car that is merely red never shows that single, clean red -> green switch. Components
+    must also be compact (``min_fill`` of their bounding box) and small (``max_area_frac`` of the
+    frame).
 
     Masked like overlay text, so the lamp is hidden even where its panel is not fully cropped.
     """
@@ -395,9 +398,8 @@ def indicator_boxes(
     # red on a prefix and green on the complementary suffix, both non-empty
     red_prefix = np.cumprod(red, axis=0).sum(axis=0)  # length of the all-red prefix
     green_suffix = np.cumprod(green[::-1], axis=0).sum(axis=0)  # length of all-green suffix
-    flip = ((red_prefix > 0) & (green_suffix > 0) & (red_prefix + green_suffix == t)).astype(
-        np.uint8
-    )
+    switch = red_prefix + green_suffix >= t - max_transition
+    flip = ((red_prefix > 0) & (green_suffix > 0) & switch).astype(np.uint8)
     if not flip.any():
         return []
     import cv2  # installed with rapidocr-onnxruntime

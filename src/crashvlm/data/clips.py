@@ -48,7 +48,11 @@ def download(url: str, dest: Path, attempts: int = 5, timeout=(10, 60)) -> Path:
     expected = 0
     for attempt in range(attempts):
         have = part.stat().st_size if part.exists() else 0
-        headers = {"Range": f"bytes={have}-"} if have else {}
+        # identity: some files are served with a bogus "Content-Encoding: gzip"; we want the
+        # stored bytes as-is, never a transparently "decompressed" stream
+        headers = {"Accept-Encoding": "identity"}
+        if have:
+            headers["Range"] = f"bytes={have}-"
         try:
             with requests.get(url, stream=True, timeout=timeout, headers=headers) as r:
                 r.raise_for_status()
@@ -58,12 +62,16 @@ def download(url: str, dest: Path, attempts: int = 5, timeout=(10, 60)) -> Path:
                 elif r.status_code == 206:
                     expected = have + int(r.headers.get("content-length") or 0)
                 with open(part, "ab" if have else "wb") as f:
-                    for chunk in r.iter_content(chunk_size=1 << 20):
+                    for chunk in r.raw.stream(1 << 20, decode_content=False):
                         f.write(chunk)
             if not expected or part.stat().st_size == expected:
                 part.rename(dest)
                 return dest
-        except (requests.ConnectionError, requests.Timeout):
+        except (
+            requests.ConnectionError,
+            requests.Timeout,
+            requests.exceptions.ChunkedEncodingError,
+        ):
             pass
         time.sleep(2**attempt)
     raise OSError(f"download failed after {attempts} attempts: {url}")

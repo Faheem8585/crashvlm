@@ -14,6 +14,14 @@ adding geometric / simulation information improve the assessment?
 
 ## Quick start (M1)
 
+On a Mac with iCloud "Desktop & Documents" enabled, keep the data and the virtual environment
+out of the synced folders. iCloud otherwise throttles the pipeline's I/O and hides the
+environment's `.pth` files, which breaks imports:
+
+```bash
+export CRASHVLM_DATA=~/crashvlm_data UV_PROJECT_ENVIRONMENT=~/.venvs/crashvlm
+```
+
 ```bash
 uv sync
 uv run python scripts/build_catalog.py      # crawl NHTSA API -> data/interim/catalog.parquet

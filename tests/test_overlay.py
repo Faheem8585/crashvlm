@@ -197,3 +197,13 @@ def test_indicator_lamp_detected_and_scene_colours_ignored():
         f[5:7, 5:7] = (255, 0, 0) if k < 2 else (0, 215, 5)  # 4 px speck: below min_area
     boxes = indicator_boxes(frames, min_area=100)
     assert boxes == [Box(20, 100, 50, 130)]
+
+
+def test_indicator_lamp_with_mid_switch_frame():
+    # the sampled frame at t0 catches the lamp mid-switch (neither red nor green)
+    frames = scene_frames(n=8, h=240, w=400, seed=4)
+    for k, f in enumerate(frames):
+        colour = (255, 0, 0) if k < 2 else (120, 120, 0) if k == 2 else (0, 215, 5)
+        f[100:130, 20:50] = colour
+    assert indicator_boxes(frames, min_area=100) == [Box(20, 100, 50, 130)]
+    assert indicator_boxes(frames, min_area=100, max_transition=0) == []
