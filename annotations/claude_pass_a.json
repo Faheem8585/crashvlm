@@ -2710,6 +2710,51 @@
    "notes": "rear-quarter onboard view"
   }
  },
+ "8189_exterior": {
+  "events": {
+   "impact_onset": -3,
+   "airbag_deploy_start": {
+    "t_ms": 21,
+    "onset_visible": false
+   },
+   "max_deformation": 69
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2013, dim lighting"
+  }
+ },
+ "8189_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -5,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 19,
+   "head_contact": {
+    "t_ms": 43,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "rear onboard view; low-res; late white lines are loose cables"
+  }
+ },
  "8204_exterior": {
   "events": {
    "impact_onset": -2,
@@ -2753,6 +2798,135 @@
    "fire_or_fluid_leak": "no",
    "visual_severity": "medium",
    "notes": "impact onset from measured t0 (not visible from inside)"
+  }
+ },
+ "8205_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "max_deformation": 62
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": ""
+  }
+ },
+ "8205_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "side/curtain bag at struck side from +14 ms; head leans into curtain ~+46 ms"
+  }
+ },
+ "8212_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "2013 Buick Encore; hood buckles strongly upward, glass/debris spray from +70 ms"
+  }
+ },
+ "8212_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 22,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "exterior driver close-up; dark interior early"
+  }
+ },
+ "8296_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "side_glass_break_onset": 30,
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "MDB at driver side; heavy glass spray from +30 ms"
+  }
+ },
+ "8296_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "side_glass_break_onset": 22,
+   "head_contact": {
+    "t_ms": 38,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "side glass shatters at +22 ms; over-exposed window area"
   }
  }
 }
