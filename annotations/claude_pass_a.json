@@ -3742,5 +3742,92 @@
    "visual_severity": "medium",
    "notes": "long curtain along struck side"
   }
+ },
+ "9494_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2016 CX-3; airbag smoke (not fire) from +54 ms"
+  }
+ },
+ "9494_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 22,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "rear onboard view; late dark object from +206 ms is a loose camera/cable, not crash damage"
+  }
+ },
+ "9507_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "white car in strong sunlight, low contrast at contact area"
+  }
+ },
+ "9507_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "head_contact": {
+    "t_ms": 38,
+    "surface": "airbag"
+   },
+   "windshield_crack_onset": 38
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "shattered",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "camera through windshield, which shatters from +38 ms in this side-MDB test"
+  }
  }
 }
