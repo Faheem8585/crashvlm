@@ -2108,6 +2108,218 @@
    "notes": "passenger bag also deploys"
   }
  },
+ "15542_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "side_glass_break_onset": 38,
+   "max_deformation": 62
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "dark pickup; glass/smoke at impact side from +38 ms"
+  }
+ },
+ "15542_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "head_contact": {
+    "t_ms": 22,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "over-exposed smoke +30 to +62 ms"
+  }
+ },
+ "15628_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "side_glass_break_onset": 46,
+   "max_deformation": 62
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "dark car; airbag visible through struck-side window from above"
+  }
+ },
+ "15628_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": 14,
+   "airbag_deploy_start": 22,
+   "head_contact": {
+    "t_ms": 38,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "side window crazes at +14 ms before airbag appears"
+  }
+ },
+ "7600_exterior": {
+  "events": {
+   "impact_onset": -3,
+   "side_glass_break_onset": 45,
+   "max_deformation": 77
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "cracked",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "2012 low-res; clip starts at -3 ms; time axis not OCR-verified"
+  }
+ },
+ "7600_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -3,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 13,
+   "side_glass_break_onset": 29,
+   "head_contact": {
+    "t_ms": 37,
+    "surface": "airbag"
+   },
+   "windshield_crack_onset": 53
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "shattered",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "camera through windshield; side glass fragments from +29 ms"
+  }
+ },
+ "7608_exterior": {
+  "events": {},
+  "summary": {
+   "view_usable": false,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "100 fps camera (10 ms/frame, 80 ms between annotation frames): no event timing possible; exclude from temporal metrics"
+  }
+ },
+ "7608_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 0,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 20,
+   "head_contact": {
+    "t_ms": 50,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "~800 fps camera (1.25 ms/frame per OCR), 10 ms annotation steps; strong glare"
+  }
+ },
+ "7620_exterior": {
+  "events": {
+   "impact_onset": -3,
+   "airbag_deploy_start": {
+    "t_ms": 21,
+    "onset_visible": false
+   },
+   "max_deformation": 69
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2012 VW Beetle; airbag smoke from +69 ms"
+  }
+ },
+ "7620_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -3,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 21,
+   "head_contact": {
+    "t_ms": 45,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "exterior driver close-up; airbag smoke (not fire) later"
+  }
+ },
  "8204_exterior": {
   "events": {
    "impact_onset": -2,
