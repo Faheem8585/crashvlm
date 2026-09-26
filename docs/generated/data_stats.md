@@ -36,7 +36,7 @@ Vehicle groups: 83; IAA tests: 15
 |---|---|---|---|---|---|---|
 | ITV | exterior | 30 | 30 | 30 | 0.038 | 1.0 |
 | ITV | occupant | 30 | 30 | 30 | 0.001 | 1.0 |
-| VTB | exterior | 40 | 38 | 37 | 0.004 | 1.0 |
+| VTB | exterior | 40 | 38 | 36 | 0.004 | 1.0 |
 | VTB | occupant | 40 | 40 | 39 | 0.004 | 1.0 |
 | VTP | exterior | 30 | 30 | 29 | 0.029 | 1.0 |
 | VTP | occupant | 30 | 30 | 29 | 0.012 | 1.0 |

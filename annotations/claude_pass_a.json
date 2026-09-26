@@ -2414,7 +2414,7 @@
  "7639_exterior": {
   "events": {
    "impact_onset": {
-    "t_ms": 1,
+    "t_ms": -50,
     "onset_visible": false
    }
   },
@@ -2427,7 +2427,7 @@
    "door_opened": "not_visible",
    "fire_or_fluid_leak": "no",
    "visual_severity": "medium",
-   "notes": "2012 MPEG-2, washed-out sepia overhead, impact area out of frame; no event timing possible"
+   "notes": "2012 MPEG-2, washed-out sepia overhead, impact area out of frame; time axis corrected (frame counter + T0 rule), impact_onset moved from +1 to -50 ms (same frame)"
   }
  },
  "7639_occupant": {
@@ -3228,6 +3228,88 @@
    "fire_or_fluid_leak": "no",
    "visual_severity": "medium",
    "notes": "large side/curtain bag at struck side"
+  }
+ },
+ "8479_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "side_glass_break_onset": 38,
+   "max_deformation": 86
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "cracked",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "close overhead of pole contact; pickup cab"
+  }
+ },
+ "8479_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "side_glass_break_onset": 46
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "cracked",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "side view from passenger side; curtain along roof from +14 ms; frontal bag deploys very late (~+102 ms) in this pole test; head contact with curtain not resolvable"
+  }
+ },
+ "8528_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "windshield_crack_onset": 46,
+   "max_deformation": 86
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "cracked",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "2014 Tundra; roof buckles above pole"
+  }
+ },
+ "8528_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   },
+   "windshield_crack_onset": 46
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "shattered",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "side/curtain bag +14 ms; frontal bag also deploys ~+54 ms in this pole test; camera through windshield"
   }
  }
 }
