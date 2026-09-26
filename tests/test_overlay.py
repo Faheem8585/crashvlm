@@ -218,3 +218,12 @@ def test_time_model_prefers_ms_series_over_frame_counter_with_ocr_merge():
     texts[6] = (150, "1,000fps T0: 50 Frame:151102,22")  # merged by OCR
     tm = fit_time_model([cluster(texts)])
     assert tm.t_ms_at_frame0 == pytest.approx(-48.78, abs=0.01)
+
+
+@pytest.mark.parametrize("step", [1, 3])  # 3: MPEG-2 files with every frame repeated
+def test_time_model_from_frame_counter_and_t0(step):
+    # Calspan overlay without any time: "1,000 fps T0: 51 Frame: n"
+    texts = [(i, f"1,000 fps T0: 51 Frame: {1 + i // step}") for i in range(0, 350, 25)]
+    tm = fit_time_model([cluster(texts)])
+    assert tm.ms_per_frame == pytest.approx(1.0 / step, abs=1e-6)
+    assert tm.t_ms_at_frame0 == pytest.approx(-50.0, abs=0.5)

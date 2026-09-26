@@ -246,6 +246,9 @@ def persistent_clusters(
 # --- 3. time model ---------------------------------------------------------------------------
 
 NUM = re.compile(r"[-+]?\d+(?:\.\d+)?")
+T0_FRAME = re.compile(r"T0\s*[:=]?\s*(\d+)", re.I)  # Calspan: "T0: 51" = impact frame no.
+FRAME_NO = re.compile(r"Frame\s*[:#]?\s*(-?\d+)", re.I)
+FPS = re.compile(r"(\d[\d.,]*)\s*fps", re.I)
 MS_AFTER = re.compile(r"\s*m\s*s(?:ec)?\b", re.I)  # number directly followed by "ms"
 DECIMAL_COMMA = re.compile(r"(\d),(\d)")  # "-3,45 ms" (European formatting)
 TIME_WORDS = re.compile(r"\bms\b|time|t\s*=", re.I)
@@ -351,11 +354,49 @@ def fit_time_model(
     conv = TimeModel(
         convention_ms_per_frame, -convention_t0_frame * convention_ms_per_frame, "convention"
     )
-    if not candidates:
+    best = max(candidates, key=lambda c: c[0]) if candidates else None
+    if best is None or not best[0][0]:  # no series explicitly in ms: try frame counter + T0
+        t0 = _frame_counter_model(clusters, min_inliers)
+        if t0 is not None:
+            best = t0
+    if best is None:
         return conv
-    _, a, b, n, r, n_pts = max(candidates, key=lambda c: c[0])
+    _, a, b, n, r, n_pts = best
     agrees = abs(a - conv.ms_per_frame) < 0.02 and abs(b - conv.t_ms_at_frame0) < 2.0
     return TimeModel(a, b, "ocr", n, r, agrees, n_pts)
+
+
+def _frame_counter_model(clusters: list[TextCluster], min_inliers: int):
+    """Time from "fps / T0: <impact frame> / Frame: <n>" overlays that print no time at all:
+    t_ms = (frame_no - T0) * 1000 / fps."""
+    for c in clusters:
+        texts = [t for _, t in c.readings]
+        t0s = [int(m.group(1)) for t in texts if (m := T0_FRAME.search(t))]
+        fps_vals = []
+        for t in texts:
+            if m := FPS.search(t):
+                v = m.group(1).replace(",", "").replace(".", "")
+                if v.isdigit() and int(v) > 0:
+                    fps_vals.append(int(v))
+        pts = [(i, int(m.group(1))) for i, t in c.readings if (m := FRAME_NO.search(t))]
+        if not t0s or not fps_vals or len({i for i, _ in pts}) < min_inliers:
+            continue
+        t0 = max(set(t0s), key=t0s.count)
+        fps = max(set(fps_vals), key=fps_vals.count)
+        x = np.array([p[0] for p in pts], float)
+        y = np.array([p[1] for p in pts], float)
+        slope, icpt = _theil_sen(x, y)
+        if not 0.05 <= slope <= 20:
+            continue
+        inl = np.abs(y - (slope * x + icpt)) <= max(1.0, 0.5 * slope)
+        if inl.sum() < min_inliers:
+            continue
+        slope, icpt = _theil_sen(x[inl], y[inl])
+        ms = 1000.0 / fps
+        r_max = float(np.abs(y[inl] - (slope * x[inl] + icpt)).max() * ms)
+        n_in = len(set(x[inl].tolist()))
+        return ((True, True, True, n_in), slope * ms, (icpt - t0) * ms, n_in, r_max, len(c.frames))
+    return None
 
 
 # --- putting it together ---------------------------------------------------------------------
