@@ -2534,6 +2534,182 @@
    "notes": "camera through windshield; white cushion at struck side first clear at +61 ms behind cracked glass (low confidence); head contact not visible"
   }
  },
+ "7863_exterior": {
+  "events": {
+   "impact_onset": 0,
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "max_deformation": 64
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2012 i-MiEV, low-res, frames repeated (~3 ms steps)"
+  }
+ },
+ "7863_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 0,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 19,
+   "head_contact": {
+    "t_ms": 35,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "exterior driver close-up; time axis NOT verified for this clip (convention fallback)"
+  }
+ },
+ "7955_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "side_glass_break_onset": 54,
+   "max_deformation": 78
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "cracked",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "pole at driver door; strong light reflections on dark roof"
+  }
+ },
+ "7955_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "head_contact": {
+    "t_ms": 38,
+    "surface": "airbag"
+   },
+   "windshield_crack_onset": 46
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "shattered",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "camera through windshield; view degraded after +46 ms"
+  }
+ },
+ "7982_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "side_glass_break_onset": 46,
+   "max_deformation": 78
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "cracked",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "pole at driver door; glass fragments from +46 ms"
+  }
+ },
+ "7982_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "side_glass_break_onset": 14,
+   "airbag_deploy_start": {
+    "t_ms": 22,
+    "onset_visible": false
+   },
+   "windshield_crack_onset": 46
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "shattered",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "over-exposed struck side; curtain onset low confidence; head contact not visible; wiper arm enters view late"
+  }
+ },
+ "8156_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2013 Civic; airbag smoke (not fire) from +70 ms"
+  }
+ },
+ "8156_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 22,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "rear-quarter onboard view"
+  }
+ },
  "8204_exterior": {
   "events": {
    "impact_onset": -2,
