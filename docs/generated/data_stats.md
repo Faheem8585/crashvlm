@@ -1,4 +1,4 @@
-# Dataset statistics (generated 2026-09-25)
+# Dataset statistics (generated 2026-09-26)
 
 ## Catalog: NCAP tests 2012+ in the NHTSA database
 
@@ -30,25 +30,29 @@ Vehicle groups: 83; IAA tests: 15
 | MGA RESEARCH | 12 | 13 | 13 |
 | TRC OF OHIO | 3 | 7 | 7 |
 
-## Processed clips (30)
+## Processed clips (200)
 
 | config_key | role | clips | time_from_ocr | time_verified | median_crop_frac | median_masks |
 |---|---|---|---|---|---|---|
-| ITV | exterior | 7 | 7 | 7 | 0.121 | 1.0 |
-| ITV | occupant | 7 | 7 | 7 | 0.044 | 1.0 |
-| VTB | exterior | 4 | 3 | 3 | 0.084 | 1.0 |
-| VTB | occupant | 4 | 4 | 3 | 0.213 | 1.0 |
-| VTP | exterior | 4 | 4 | 3 | 0.085 | 1.0 |
-| VTP | occupant | 4 | 4 | 3 | 0.169 | 1.0 |
+| ITV | exterior | 30 | 30 | 30 | 0.038 | 1.0 |
+| ITV | occupant | 30 | 30 | 30 | 0.001 | 1.0 |
+| VTB | exterior | 40 | 38 | 37 | 0.004 | 1.0 |
+| VTB | occupant | 40 | 40 | 39 | 0.004 | 1.0 |
+| VTP | exterior | 30 | 30 | 29 | 0.029 | 1.0 |
+| VTP | occupant | 30 | 30 | 29 | 0.012 | 1.0 |
 
 ### Source codecs
 
 | codec | performer | clips |
 |---|---|---|
-| h264 | CALSPAN | 4 |
+| h264 | CALSPAN | 23 |
+| h264 | KARCO ENGINEERING | 26 |
+| h264 | MGA RESEARCH | 34 |
+| h264 | TRC OF OHIO | 6 |
 | mpeg2video | CALSPAN | 4 |
-| vc1 | TRC OF OHIO | 4 |
-| wmv2 | MGA RESEARCH | 6 |
-| wmv3 | KARCO ENGINEERING | 8 |
+| vc1 | TRC OF OHIO | 22 |
+| wmv2 | MGA RESEARCH | 42 |
+| wmv3 | CALSPAN | 3 |
+| wmv3 | KARCO ENGINEERING | 32 |
 | wmv3 | MEDICAL COLLEGE OF WISCONSIN | 2 |
-| wmv3 | TRC OF OHIO | 2 |
+| wmv3 | TRC OF OHIO | 6 |

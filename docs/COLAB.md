@@ -39,3 +39,35 @@ timestamp, frame counter or T0 dot.
 
 On Kaggle, drop step 2 and set `CRASHVLM_DATA=/kaggle/working/data`, then save the output as
 a Kaggle dataset.
+
+## M2: zero-shot pre-labels (GPU, ~5 min on a T4)
+
+Upload `data/annotation/pass_a/images.zip` and `data/annotation/clip_index.json` from your Mac
+to `MyDrive/crashvlm/data/annotation/` (same relative layout). Then, in a GPU runtime:
+
+```python
+!git clone https://github.com/<github-user>/crashvlm.git
+%cd crashvlm
+!pip -q install -e ".[ml]"   # reuses Colab's preinstalled torch
+```
+
+```python
+import os
+
+from google.colab import drive
+
+drive.mount("/content/drive")
+os.environ["CRASHVLM_DATA"] = "/content/drive/MyDrive/crashvlm/data"
+```
+
+```python
+!python scripts/zero_shot_prelabels.py
+```
+
+Expected output: `200 clips -> .../annotation/zero_shot_preds.jsonl`. Download
+`zero_shot_preds.jsonl` (and `zero_shot_curves.npz`, which M3 reuses) into `data/annotation/`
+on the Mac, then rebuild the pass A pre-labels:
+
+```bash
+uv run python scripts/make_cvat_tasks.py annotation.zero_shot_preds=data/annotation/zero_shot_preds.jsonl
+```

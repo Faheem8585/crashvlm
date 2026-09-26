@@ -45,6 +45,17 @@ flowchart LR
 5. **Lab confounder.** Lab identity is visible (camera setup, lighting). Results will be
    reported per lab where n allows it.
 
+### Lesson: validate the cleaner on the full set, not the smoke set
+
+The 30-clip smoke run looked clean. The 200-clip run then showed the first band rule
+(uniformity only) cropping dark cabin areas in TRC onboard views, up to 92 % of one frame. A
+stricter rule (uniform in every frame) fixed that but let the KARCO T0 dot back in. The final
+rule, uniform **and** at least 90 % of pixels unchanged over the clip, with text pixels counted
+as panel and a gap tolerance of 1 % of the frame, was chosen by comparing candidate rules
+against the expected crops of ten reference clips (every lab layout, both failure modes).
+`overlay_report.py` now lists large crops and masks automatically, so this check runs on
+every re-processing.
+
 ### Tests that guard these rules
 
 - `tests/test_overlay.py`: band cropping, moving vs. fixed text, overlay vs. placard text,
@@ -52,3 +63,33 @@ flowchart LR
   overlays lost in over-exposed frames.
 - `tests/test_views.py`: view selection on 45 real NHTSA file listings.
 - `tests/test_split.py`: no vehicle group in two splits; IAA tests only in the test split.
+
+## M2: annotation workflow
+
+```mermaid
+flowchart LR
+  O[ontology.yaml] --> L[cvat_labels.json]
+  C[(processed clips)] -->|make_cvat_tasks.py| Z[pass_a/images.zip<br/>pass_b/images.zip]
+  C --> T0[t0 pre-labels<br/>verified clips]
+  Z -->|zero_shot_prelabels.py<br/>SigLIP 2, Colab| P[zero_shot_preds.jsonl]
+  T0 --> X[pass_a/prelabels.xml]
+  P --> X
+  L --> CV[CVAT project]
+  Z --> CV
+  X --> CV
+  CV -->|export CVAT for images 1.1| E[annotations.xml]
+  E -->|convert_cvat.py| J[pass_a.jsonl / pass_b.jsonl<br/>+ pre-label outcomes]
+  J -->|iaa.py| I[reports/m2/iaa.md]
+```
+
+| Decision | Why |
+|---|---|
+| Events are **frame tags**, not boxes | The research question is *when* and *whether* something happens; boxes would multiply labelling time without being needed for evaluation. |
+| Image tasks, frames named `<clip>__f_<idx>.jpg` | CVAT's video format has no tags. Flat, sortable names map every CVAT frame back to (clip, frame, t_ms) without a lookup table. |
+| 8 ms annotation step (every 2nd processed frame) | Halves labelling effort and upload size; the ±4 ms quantisation floor is reported with the timing metrics. |
+| `clip_summary` required on every clip | Separates "event absent" from "clip not finished"; unfinished clips are excluded, never read as negatives. |
+| `impact_onset` pre-filled from verified t = 0 | Time zero is first contact by NCAP definition, measured by the lab. The annotator only checks it, and pass B measures how often that check changes anything. |
+| Zero-shot pre-labels keep `source="auto"` | The export shows which proposals were kept, moved or rejected: a direct measure of how useful pre-annotation is. |
+| Pass B unassisted, ≥ 7 days later | One annotator can only measure intra-rater reliability. Leaving pre-labels out of pass B makes any anchoring effect visible instead of hiding it. |
+| `fire_or_fluid_leak` kept although almost always "no" | Not a detection target: it is the ground truth for the M6 hallucination probe. |
+| Free CVAT cloud plan (1 project, 3 tasks, 1 GB) | The two passes use two tasks; self-hosting CVAT in Docker needs more disk than is free. |

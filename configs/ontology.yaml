@@ -1,0 +1,78 @@
+# Annotation ontology (M2). Single source of truth: the CVAT label config, the converters, the
+# guideline tables and the evaluation all read this file.
+#
+# Point events are CVAT tags placed on the first frame where the event is visible.
+# The clip summary is one tag on the clip's first frame, with attributes.
+version: 1
+
+point_events:
+  impact_onset:
+    roles: [exterior, occupant]
+    configs: [VTB, ITV, VTP]
+    definition: First frame where the vehicle touches the barrier, MDB or pole.
+    prelabel: t0            # auto-filled from the verified overlay time (t = 0 ms)
+  airbag_deploy_start:
+    roles: [occupant, exterior]
+    configs: [VTB, ITV, VTP]
+    definition: First frame where any airbag (frontal, curtain, side torso) visibly leaves its cover.
+    prelabel: zero_shot
+  max_deformation:
+    roles: [exterior]
+    configs: [VTB, ITV, VTP]
+    definition: Frame of maximum visible structural intrusion, before rebound or separation starts.
+    prelabel: zero_shot
+  head_contact:
+    roles: [occupant]
+    configs: [VTB, ITV, VTP]
+    definition: First frame where the dummy head touches an airbag or an interior part.
+    prelabel: zero_shot
+    attributes:
+      surface: { type: select, values: [airbag, structure, other] }
+  windshield_crack_onset:
+    roles: [exterior, occupant]
+    configs: [VTB, ITV, VTP]
+    definition: First frame with a visible new crack in the windshield.
+    prelabel: zero_shot
+  side_glass_break_onset:
+    roles: [exterior, occupant]
+    configs: [ITV, VTP]
+    definition: First frame where a side window visibly breaks.
+    prelabel: zero_shot
+  door_opens:
+    roles: [exterior]
+    configs: [VTB, ITV, VTP]
+    definition: First frame where any door visibly unlatches and opens.
+    prelabel: zero_shot
+
+# every point event also gets these attributes
+common_event_attributes:
+  onset_visible:
+    type: checkbox
+    default: true
+    help: Untick if the event is already under way in the first frame where it can be seen
+      (occlusion, glare, happens off-screen).
+
+clip_summary:
+  view_usable:
+    type: checkbox
+    default: true
+    help: Untick if glare, blur or occlusion make the clip unusable for this role.
+  frontal_airbag_deployed: { type: select, values: ["yes", "no", not_visible], default: not_visible }
+  curtain_airbag_deployed: { type: select, values: ["yes", "no", not_visible], default: not_visible }
+  a_pillar_deformation: { type: select, values: [none, minor, severe, not_visible], default: not_visible }
+  windshield_damage: { type: select, values: [none, cracked, shattered, not_visible], default: not_visible }
+  door_opened: { type: select, values: ["yes", "no", not_visible], default: not_visible }
+  fire_or_fluid_leak: { type: select, values: ["yes", "no", not_visible], default: "no" }
+  visual_severity:
+    type: select
+    values: [low, medium, high]
+    default: medium
+    help: The annotator's overall impression of structural severity in this view. It is compared
+      with measured crush and HIC in M6 and never used as a target on its own.
+  notes: { type: text, default: "" }
+
+annotation:
+  frame_stride: 2        # take every 2nd processed frame (processed stride 4) -> 8 ms steps
+  passes:
+    pass_a: { clips: all, prelabels: true }
+    pass_b: { clips: iaa, prelabels: false }   # repeat labelling, >= 7 days after pass A

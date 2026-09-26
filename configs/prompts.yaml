@@ -1,0 +1,55 @@
+# Zero-shot prompts per point event (M2 pre-labels, M3 baseline, M6 prompt ablation).
+# score(frame) = softmax([mean logit of positives, mean logit of negatives])[0]
+# mode: onset = first frame where the smoothed score stays > threshold for min_run frames
+#       peak  = frame with the highest score (if it exceeds threshold)
+model: google/siglip2-so400m-patch14-384
+threshold: 0.5
+min_run: 3
+smooth: 3
+
+events:
+  airbag_deploy_start:
+    mode: onset
+    positive:
+      - a crash test photo of an inflating airbag
+      - an airbag deploying in front of a crash test dummy
+      - a white airbag cushion expanding inside a car
+    negative:
+      - a crash test dummy in a car seat with no airbag deployed
+      - a car interior before a crash
+  max_deformation:
+    mode: peak
+    positive:
+      - a severely crushed car in a crash test
+      - a car with heavy structural deformation against a barrier
+    negative:
+      - an undamaged car before a crash test
+      - a car approaching a barrier
+  head_contact:
+    mode: onset
+    positive:
+      - a crash test dummy's head pressing into an airbag
+      - a crash test dummy's head hitting the car interior
+    negative:
+      - a crash test dummy sitting upright
+      - a crash test dummy's head far from the airbag
+  windshield_crack_onset:
+    mode: onset
+    positive:
+      - a cracked car windshield
+      - a windshield with a spider web crack pattern
+    negative:
+      - an intact clear car windshield
+  side_glass_break_onset:
+    mode: onset
+    positive:
+      - a shattering car side window with flying glass fragments
+      - broken side window glass in a crash test
+    negative:
+      - an intact car side window
+  door_opens:
+    mode: onset
+    positive:
+      - a car door swinging open during a crash test
+    negative:
+      - a car with all doors closed

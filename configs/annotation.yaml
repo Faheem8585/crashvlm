@@ -1,0 +1,16 @@
+# Annotation workflow config (M2). Inherits paths from data.yaml.
+defaults:
+  - data
+  - _self_
+
+annotation:
+  ontology: configs/ontology.yaml
+  prompts: configs/prompts.yaml
+  out: ${paths.root}/annotation
+  zero_shot_preds: null      # e.g. data/annotation/zero_shot_preds.jsonl (from Colab)
+  pass_name: pass_a          # for convert_cvat.py
+  annotator: A
+  cvat_export: null          # path to the exported annotations.xml
+  images_zip: ${annotation.out}/pass_a/images.zip   # zero-shot input
+  batch_size: 32
+  model: null               # override prompts.yaml model (e.g. a tiny test model)
