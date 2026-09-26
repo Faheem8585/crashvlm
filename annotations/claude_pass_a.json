@@ -3311,5 +3311,93 @@
    "visual_severity": "high",
    "notes": "side/curtain bag +14 ms; frontal bag also deploys ~+54 ms in this pole test; camera through windshield"
   }
+ },
+ "8660_exterior": {
+  "events": {
+   "impact_onset": 0,
+   "airbag_deploy_start": {
+    "t_ms": 32,
+    "onset_visible": false
+   },
+   "max_deformation": 72
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2014 Captiva; airbag smoke (not fire) from +56 ms; time axis corrected (commit b6418a6)"
+  }
+ },
+ "8660_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": 0,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 24,
+   "head_contact": {
+    "t_ms": 48,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "exterior driver close-up"
+  }
+ },
+ "8665_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "side_glass_break_onset": 38,
+   "max_deformation": 86
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "cracked",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "close overhead of pole contact"
+  }
+ },
+ "8665_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "side_glass_break_onset": 38,
+   "head_contact": {
+    "t_ms": 86,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "cracked",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "high",
+   "notes": "side view from passenger side; curtain along roof from +14 ms; head reaches curtain late (~+86 ms), approximate"
+  }
  }
 }
