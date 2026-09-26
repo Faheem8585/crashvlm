@@ -3829,5 +3829,91 @@
    "visual_severity": "high",
    "notes": "camera through windshield, which shatters from +38 ms in this side-MDB test"
   }
+ },
+ "9513_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "not_visible",
+   "curtain_airbag_deployed": "not_visible",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "close overhead of MDB contact"
+  }
+ },
+ "9513_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 14,
+   "head_contact": {
+    "t_ms": 38,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "no",
+   "curtain_airbag_deployed": "yes",
+   "a_pillar_deformation": "not_visible",
+   "windshield_damage": "none",
+   "door_opened": "not_visible",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "late white speckles from +254 ms are video corruption, not debris"
+  }
+ },
+ "9557_exterior": {
+  "events": {
+   "impact_onset": -2,
+   "airbag_deploy_start": {
+    "t_ms": 30,
+    "onset_visible": false
+   },
+   "max_deformation": 70
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "2016 Volvo XC90; hood folds up sharply; airbag smoke from +86 ms"
+  }
+ },
+ "9557_occupant": {
+  "events": {
+   "impact_onset": {
+    "t_ms": -2,
+    "onset_visible": false
+   },
+   "airbag_deploy_start": 22,
+   "head_contact": {
+    "t_ms": 46,
+    "surface": "airbag"
+   }
+  },
+  "summary": {
+   "view_usable": true,
+   "frontal_airbag_deployed": "yes",
+   "curtain_airbag_deployed": "no",
+   "a_pillar_deformation": "none",
+   "windshield_damage": "none",
+   "door_opened": "no",
+   "fire_or_fluid_leak": "no",
+   "visual_severity": "medium",
+   "notes": "rear-quarter onboard view"
+  }
  }
 }
