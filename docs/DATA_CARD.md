@@ -69,7 +69,14 @@ part of the API fields used here; they may be in the test-report PDFs (not parse
    - Each lab burns in its own overlay: side or bottom panels with frame number, time and a
      red→green **T0 indicator dot** (KARCO), text strips (MGA, Calspan), or a timestamp box over
      the scene (TRC).
-   - Uniform, static border bands are cropped.
+   - Border bands are cropped when, outside overlay text, a line is mostly one colour **and**
+     at least 90 % of it stays unchanged across the clip. The first version checked uniformity
+     only. The full-run audit showed it cropping dark but real cabin areas in TRC onboard views
+     (up to 92 % of one frame). The current rule was validated on ten reference clips covering
+     every lab layout (`tests/test_overlay.py` holds the synthetic equivalents). It still crops
+     fully black, static lens vignetting, which carries no content.
+   - T0 indicator lamps are masked: compact blobs that are pure red up to one frame and pure
+     green from then on. Scene objects never show that single red→green switch.
    - Text boxes found by OCR (RapidOCR) are masked when they stay in the same place across the clip
      **and** look like an overlay: overlay words (ms, fps, frame, time, camera…) or numbers that
      change between frames.
@@ -84,10 +91,13 @@ part of the API fields used here; they may be in the test-report PDFs (not parse
      unverified.
    - Temporal-localisation metrics use verified clips only.
 4. Every 4th decoded frame is saved as a JPEG, longest side 512 px, with its physical time in
-   `meta.json`. Each clip also gets a `preview.jpg` (original | processed).
-5. `scripts/overlay_report.py` stitches all previews into `reports/m1/overlay_check.jpg` for a
-   manual check. The check must find no timestamps, frame counters or T0 dots in the processed
-   images.
+   `meta.json`. Each clip also gets a `preview.jpg` (original | processed). `meta.json` records
+   the git commit of the pipeline code (`code_version`, `+dirty` if the data code differed from
+   it), so every clip can be traced to the exact rules that produced it.
+5. `scripts/overlay_report.py` stitches all previews into `reports/m1/overlay_check.jpg`, and
+   clips with a crop > 35 % or a masked area > 10 % into `overlay_suspect.jpg`, for a manual
+   check. The check must find no timestamps, frame counters or T0 dots, and no crash-relevant
+   content cropped or masked.
 
 ## Known issues and biases
 

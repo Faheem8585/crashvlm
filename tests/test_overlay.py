@@ -9,6 +9,7 @@ from crashvlm.data.overlay import (
     apply_overlay,
     detect_border_bands,
     fit_time_model,
+    indicator_boxes,
     looks_like_overlay,
     persistent_clusters,
 )
@@ -32,7 +33,26 @@ def test_detects_bottom_and_left_panels_with_text():
         f[:, :40] = 90  # left panel
         f[108:112, 60 + k : 70 + k] = 255  # changing "text" inside the band
         f[20:24, 5:30] = 0  # static text in the panel
-    assert detect_border_bands(frames) == Box(40, 0, 200, 100)
+    text = np.zeros((120, 200), bool)  # OCR text boxes, as analyze_overlay passes them
+    text[106:114, 58:82] = True
+    text[18:26, 3:32] = True
+    assert detect_border_bands(frames, text_mask=text) == Box(40, 0, 200, 100)
+
+
+def test_dark_scene_region_with_lighting_change_is_not_a_band():
+    # onboard view: a dark seat back on the left, lit up by the airbag in one frame
+    frames = scene_frames(n=8)
+    for k, f in enumerate(frames):
+        f[:, :60] = 8 if k != 5 else 70
+    assert detect_border_bands(frames).x0 == 0
+
+
+def test_letterbox_bars_are_cropped():
+    frames = scene_frames(n=6)
+    for f in frames:
+        f[:, :20] = 0
+        f[:, -20:] = 0
+    assert detect_border_bands(frames) == Box(20, 0, 180, 120)
 
 
 def test_band_limited_to_max_frac():
@@ -158,3 +178,22 @@ def test_edge_text_needs_lower_persistence():
 )
 def test_looks_like_overlay(texts, expected):
     assert looks_like_overlay(cluster(list(enumerate(texts)))) is expected
+
+
+def test_panel_with_changing_t0_dot_is_fully_cropped():
+    # KARCO-style grey side panel whose red dot turns green at t0; the dot is not OCR text
+    frames = scene_frames(n=10, h=240, w=400)
+    for k, f in enumerate(frames):
+        f[:, :120] = 128
+        f[100:112, 50:62] = (255, 0, 0) if k < 3 else (0, 200, 0)  # ~5% of height, as in KARCO
+    assert detect_border_bands(frames).x0 == 120
+
+
+def test_indicator_lamp_detected_and_scene_colours_ignored():
+    frames = scene_frames(n=6, h=240, w=400, seed=3)
+    for k, f in enumerate(frames):
+        f[100:130, 20:50] = (255, 0, 0) if k < 2 else (0, 215, 5)  # T0 lamp
+        f[200:230, 300:340] = (220, 30, 30)  # a red object that stays red: not a lamp
+        f[5:7, 5:7] = (255, 0, 0) if k < 2 else (0, 215, 5)  # 4 px speck: below min_area
+    boxes = indicator_boxes(frames, min_area=100)
+    assert boxes == [Box(20, 100, 50, 130)]

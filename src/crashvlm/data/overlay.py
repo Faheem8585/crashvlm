@@ -14,6 +14,7 @@ models must never see them. We
 from __future__ import annotations
 
 import re
+import warnings
 from dataclasses import asdict, dataclass, field
 from typing import Protocol
 
@@ -84,14 +85,32 @@ class RapidOCRReader:
 # --- 1. border bands -------------------------------------------------------------------------
 
 
-def _line_uniformity(lines: np.ndarray, tol: int) -> tuple[np.ndarray, np.ndarray]:
-    """lines: (T, N, L, 3). Returns per-line (uniform fraction, temporal std of line colour)."""
-    lines = lines.astype(np.int16)
-    med = np.median(lines, axis=2, keepdims=True)
-    close = np.abs(lines - med).max(axis=-1) <= tol
-    frac = close.mean(axis=2).mean(axis=0)
-    colour_std = med[:, :, 0, :].std(axis=0).max(axis=-1)
-    return frac, colour_std
+def _line_stats(lines: np.ndarray, valid: np.ndarray, tol: int):
+    """Per line, ignoring pixels under overlay text (``valid`` False):
+
+    - ``uniform``: mean over frames of the fraction of pixels within ``tol`` of the line's
+      median colour,
+    - ``static``: fraction of the line that is overlay text or changes by at most ``tol`` over
+      the clip (text pixels count as panel: they belong to the overlay),
+    - ``colour_std``: temporal std of the line's median colour.
+
+    lines: (T, N, L, 3) uint8; valid: (N, L) bool.
+    """
+    x = lines.astype(np.float32)
+    x[:, ~valid, :] = np.nan
+    n_valid = np.maximum(valid.sum(axis=1), 1)
+    all_text = valid.sum(axis=1) == 0  # a line fully under overlay text belongs to the overlay
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)  # all-NaN slices on all-text lines
+        med = np.nanmedian(x, axis=2, keepdims=True)
+        colour_std = np.nan_to_num(np.nanstd(med[:, :, 0, :], axis=0).max(axis=-1))
+        t_range = np.nan_to_num((np.nanmax(x, axis=0) - np.nanmin(x, axis=0)).max(axis=-1))
+    close = np.abs(x - med).max(axis=-1) <= tol  # NaN compares False
+    uniform = (close.sum(axis=2) / n_valid).mean(axis=0)
+    static = ((t_range <= tol) | ~valid).mean(axis=1)
+    uniform[all_text] = 1.0
+    static[all_text] = 1.0
+    return uniform, static, colour_std
 
 
 def _band_extent(is_band: np.ndarray, max_gap: int = 2) -> int:
@@ -108,21 +127,56 @@ def _band_extent(is_band: np.ndarray, max_gap: int = 2) -> int:
 
 
 def detect_border_bands(
-    frames: list[np.ndarray], max_frac: float = 0.3, uniform_frac: float = 0.6, tol: int = 12
+    frames: list[np.ndarray],
+    max_frac: float = 0.4,
+    uniform_frac: float = 0.6,
+    tol: int = 12,
+    text_mask: np.ndarray | None = None,
+    static_frac: float = 0.9,
+    max_gap_frac: float = 0.01,
 ) -> Box:
-    """Crop box (in full-frame pixels) that removes uniform, static border panels."""
+    """Crop box (in full-frame pixels) that removes rendered border panels.
+
+    A border line belongs to a panel when, outside overlay text, most of its pixels share one
+    colour (``uniform_frac``) **and** almost all of them stay unchanged over the clip
+    (``static_frac``), and that colour is stable. Rendered panels and letterbox bars pass, even
+    with a coloured T0 dot in them. Real scene regions fail, even dark ones such as seat backs in
+    an onboard view, because the airbag and lighting change them during the crash. Fully black,
+    static lens vignetting passes and is cropped, which removes no visible content.
+
+    Up to ``max_gap_frac`` of the frame dimension may fail inside a band (e.g. the lines
+    crossing a red/green T0 dot) without ending it.
+    """
     stack = np.stack(frames)  # (T, H, W, 3)
     _, h, w, _ = stack.shape
     mh, mw = int(h * max_frac), int(w * max_frac)
+    valid = np.ones((h, w), bool) if text_mask is None else ~text_mask
+    step_w, step_h = max(1, w // 480), max(1, h // 480)  # subsample along each line
+    max_gap = max(3, round(max_gap_frac * min(h, w)))
 
-    def extent(lines: np.ndarray) -> int:
-        frac, cstd = _line_uniformity(lines, tol)
-        return _band_extent((frac >= uniform_frac) & (cstd <= tol))
+    def extents(skip_l: int, skip_t: int, skip_r: int, skip_b: int) -> tuple[int, int, int, int]:
+        # Rows are judged between the left/right skips, columns between the top/bottom skips,
+        # so a panel on a perpendicular side does not break uniformity at the corners.
+        xs = slice(skip_l, w - skip_r, step_w)
+        ys = slice(skip_t, h - skip_b, step_h)
 
-    top = extent(stack[:, :mh])
-    bottom = extent(stack[:, h - mh :][:, ::-1])
-    left = extent(stack[:, :, :mw].transpose(0, 2, 1, 3))
-    right = extent(stack[:, :, w - mw :].transpose(0, 2, 1, 3)[:, ::-1])
+        def ext(lines: np.ndarray, ok: np.ndarray) -> int:
+            uniform, static, cstd = _line_stats(lines, ok, tol)
+            ok_line = (uniform >= uniform_frac) & (static >= static_frac) & (cstd <= tol)
+            return _band_extent(ok_line, max_gap)
+
+        top = ext(stack[:, :mh, xs], valid[:mh, xs])
+        bottom = ext(stack[:, h - mh :, xs][:, ::-1], valid[h - mh :, xs][::-1])
+        left = ext(stack[:, ys, :mw].transpose(0, 2, 1, 3), valid[ys, :mw].T)
+        right = ext(
+            stack[:, ys, w - mw :].transpose(0, 2, 1, 3)[:, ::-1], valid[ys, w - mw :].T[::-1]
+        )
+        return left, top, right, bottom
+
+    # pass 1: judge only the central part of every line -> first guess of all four bands
+    left, top, right, bottom = extents(mw, mh, mw, mh)
+    # pass 2: exclude exactly the perpendicular bands found in pass 1
+    left, top, right, bottom = extents(left, top, right, bottom)
     return Box(left, top, w - right, h - bottom)
 
 
@@ -316,12 +370,51 @@ class OverlayResult:
         }
 
 
+def indicator_boxes(
+    frames: list[np.ndarray],
+    min_area: int = 100,
+    max_area_frac: float = 0.02,
+    min_fill: float = 0.5,
+) -> list[Box]:
+    """Boxes around T0 indicator lamps (KARCO burns a red dot that turns green at t = 0).
+
+    A lamp pixel is pure red in every frame before one switch point and pure green in every frame
+    after it (``frames`` in time order). Scene noise or a car that is merely red never shows that
+    single, clean red -> green switch. Components must also be compact (``min_fill`` of their
+    bounding box) and small (``max_area_frac`` of the frame).
+
+    Masked like overlay text, so the lamp is hidden even where its panel is not fully cropped.
+    """
+    stack = np.stack(frames).astype(np.int16)  # (T, H, W, 3)
+    t, h, w, _ = stack.shape
+    if t < 2:
+        return []
+    r, g, b = stack[..., 0], stack[..., 1], stack[..., 2]
+    red = (r > g + 60) & (r > b + 60)
+    green = (g > r + 60) & (g > b + 30)
+    # red on a prefix and green on the complementary suffix, both non-empty
+    red_prefix = np.cumprod(red, axis=0).sum(axis=0)  # length of the all-red prefix
+    green_suffix = np.cumprod(green[::-1], axis=0).sum(axis=0)  # length of all-green suffix
+    flip = ((red_prefix > 0) & (green_suffix > 0) & (red_prefix + green_suffix == t)).astype(
+        np.uint8
+    )
+    if not flip.any():
+        return []
+    import cv2  # installed with rapidocr-onnxruntime
+
+    n, _, stats, _ = cv2.connectedComponentsWithStats(flip, connectivity=8)
+    return [
+        Box(int(x), int(y), int(x + bw), int(y + bh))
+        for x, y, bw, bh, area in stats[1:n]
+        if min_area <= area <= max_area_frac * h * w and area >= min_fill * bw * bh
+    ]
+
+
 def analyze_overlay(frames: dict[int, np.ndarray], reader: TextReader | None, cfg) -> OverlayResult:
     """``frames``: full-resolution RGB frames keyed by frame index (a sparse sample)."""
-    imgs = list(frames.values())
+    imgs = [frames[i] for i in sorted(frames)]  # time order (indicator_boxes relies on it)
     h, w = imgs[0].shape[:2]
     ov, tm = cfg.overlay, cfg.timing
-    crop = detect_border_bands(imgs, ov.band_max_frac, ov.band_uniform_frac, ov.band_tol)
     clusters: list[TextCluster] = []
     if reader is not None:
         dets = {i: reader(img) for i, img in frames.items()}
@@ -334,9 +427,22 @@ def analyze_overlay(frames: dict[int, np.ndarray], reader: TextReader | None, cf
             ov.text_edge_persist_frac,
         )
     clusters = [c for c in clusters if looks_like_overlay(c)]
+    boxes = [c.box.expand(ov.text_margin, w, h) for c in clusters]
+    boxes += [b.expand(ov.text_margin, w, h) for b in indicator_boxes(imgs, ov.indicator_min_area)]
+    text_mask = np.zeros((h, w), bool)
+    for b in boxes:
+        text_mask[b.y0 : b.y1, b.x0 : b.x1] = True
+    crop = detect_border_bands(
+        imgs,
+        ov.band_max_frac,
+        ov.band_uniform_frac,
+        ov.band_tol,
+        text_mask,
+        ov.band_static_frac,
+        ov.band_max_gap_frac,
+    )
     masks = []
-    for c in clusters:
-        b = c.box.expand(ov.text_margin, w, h)
+    for b in boxes:
         if b.intersects(crop):
             masks.append(
                 Box(

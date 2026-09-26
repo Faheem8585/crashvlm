@@ -9,6 +9,7 @@ unless ``clips.keep_raw`` is set.
 from __future__ import annotations
 
 import json
+import subprocess
 import time
 from collections.abc import Iterator
 from pathlib import Path
@@ -23,6 +24,21 @@ from crashvlm.data.overlay import TextReader, analyze_overlay, apply_overlay
 
 def clip_id(test_no: int, role: str) -> str:
     return f"{int(test_no)}_{role}"
+
+
+def code_version() -> str:
+    """Git commit of the code producing a clip; "+dirty" if the data code or config differ."""
+    root = Path(__file__).resolve().parents[3]
+    run = dict(cwd=root, capture_output=True, text=True, check=True)
+    try:
+        sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], **run).stdout.strip()
+        dirty = subprocess.run(
+            ["git", "status", "--porcelain", "--", "src/crashvlm/data", "configs/data.yaml"],
+            **run,
+        ).stdout.strip()
+        return sha + ("+dirty" if dirty else "")
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
 
 
 def download(url: str, dest: Path, attempts: int = 5, timeout=(10, 60)) -> Path:
@@ -138,6 +154,7 @@ def prepare_clip(
                 _preview(img, proc, label).save(out_dir / "preview.jpg", quality=85)
         meta = {
             "clip_id": cid,
+            "code_version": code_version(),
             "test_no": int(test_no),
             "role": role,
             "source_url": url,
