@@ -246,6 +246,7 @@ def persistent_clusters(
 # --- 3. time model ---------------------------------------------------------------------------
 
 NUM = re.compile(r"[-+]?\d+(?:\.\d+)?")
+MS_AFTER = re.compile(r"\s*m\s*s(?:ec)?\b", re.I)  # number directly followed by "ms"
 DECIMAL_COMMA = re.compile(r"(\d),(\d)")  # "-3,45 ms" (European formatting)
 TIME_WORDS = re.compile(r"\bms\b|time|t\s*=", re.I)
 OVERLAY_WORDS = re.compile(
@@ -315,10 +316,12 @@ def fit_time_model(
     candidates = []
     for c in clusters:
         is_time_text = any(TIME_WORDS.search(t) for _, t in c.readings)
-        series: dict[int, list[tuple[int, float, bool]]] = {}
+        series: dict[int, list[tuple[int, float, bool, bool]]] = {}
         for idx, text in c.readings:
-            for k, m in enumerate(NUM.findall(DECIMAL_COMMA.sub(r"\1.\2", text))):
-                series.setdefault(k, []).append((idx, float(m), "." in m))
+            norm = DECIMAL_COMMA.sub(r"\1.\2", text)
+            for k, m in enumerate(NUM.finditer(norm)):
+                ms_unit = MS_AFTER.match(norm, m.end()) is not None
+                series.setdefault(k, []).append((idx, float(m.group()), "." in m.group(), ms_unit))
         for pts in series.values():
             if len({p[0] for p in pts}) < min_inliers:
                 continue
@@ -336,8 +339,12 @@ def fit_time_model(
             if inl.sum() < min_inliers:
                 continue
             slope, icpt = _theil_sen(x[inl], y[inl])
-            has_dec = any(p[2] for p in pts)
-            score = (is_time_text, has_dec, int(inl.sum()))
+            # judge the series on its well-fitting readings only: an OCR merge such as
+            # "Frame: 151" + "102,22" -> "151102.22" must not make a frame counter look like time
+            good = [p for p, ok in zip(pts, inl, strict=True) if ok]
+            ms_unit = np.mean([p[3] for p in good]) >= 0.5
+            has_dec = any(p[2] for p in good)
+            score = (ms_unit, is_time_text, has_dec, int(inl.sum()))
             # count frames, not readings: OCR may split one overlay line into several boxes
             n_in, r_max = len(set(x[inl].tolist())), float(resid[inl].max())
             candidates.append((score, slope * scale, icpt * scale, n_in, r_max, len(c.frames)))

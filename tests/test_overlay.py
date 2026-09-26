@@ -207,3 +207,14 @@ def test_indicator_lamp_with_mid_switch_frame():
         f[100:130, 20:50] = colour
     assert indicator_boxes(frames, min_area=100) == [Box(20, 100, 50, 130)]
     assert indicator_boxes(frames, min_area=100, max_transition=0) == []
+
+
+def test_time_model_prefers_ms_series_over_frame_counter_with_ocr_merge():
+    # MGA 2014 overlay: "1,000 fps T0: 50 Frame: N  t,tt ms"; one reading merges frame and time
+    texts = [
+        (i, f"1,000 fps T0: 50 Frame: {i + 1} {i - 48.78:.2f} ms".replace(".", ","))
+        for i in range(0, 350, 25)
+    ]
+    texts[6] = (150, "1,000fps T0: 50 Frame:151102,22")  # merged by OCR
+    tm = fit_time_model([cluster(texts)])
+    assert tm.t_ms_at_frame0 == pytest.approx(-48.78, abs=0.01)
