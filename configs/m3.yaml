@@ -32,3 +32,8 @@ m3:
   bootstrap: 1000
   seed: 42
   out: reports/m3
+
+m6:
+  backbone: google__siglip2-base-patch16-224
+  fractions: [0.25, 0.5, 1.0]
+  seeds: 3
