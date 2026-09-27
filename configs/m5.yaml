@@ -1,0 +1,22 @@
+# M5: LoRA fine-tuning of the video VLM on the instruction data.
+defaults:
+  - m4
+  - _self_
+
+sft:
+  n_crops: 4                 # random start crops per training clip
+  train_fraction: 1.0        # learning-curve ablation: 0.25 / 0.5 / 1.0
+  train_file: train.jsonl
+  output_dir: ${paths.root}/lora/${vlm.run_name}
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj]   # language model attention only
+  epochs: 3
+  lr: 2.0e-4
+  batch_size: 1
+  grad_accum: 8
+  max_side: ${vlm.max_side}
+  gradient_checkpointing: true
+  max_steps: -1              # >0 for smoke runs
+  val_limit: null            # first N validation examples (smoke runs)

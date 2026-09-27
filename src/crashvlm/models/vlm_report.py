@@ -60,9 +60,13 @@ def instruction(view: str) -> str:
 
 
 def select_frames(frames: list[dict], start_ms: float, n: int, step_ms: float) -> list[dict]:
-    """``n`` frames every ``step_ms`` from ``start_ms`` (nearest available frame, no repeats)."""
+    """``n`` frames every ``step_ms`` from ``start_ms`` (nearest available frame at or after the
+    start, no repeats)."""
+    frames = [f for f in frames if f["t_ms"] >= start_ms - 1e-6]
     out, used = [], set()
     for k in range(n):
+        if not frames:
+            break
         target = start_ms + k * step_ms
         f = min(frames, key=lambda f, t=target: abs(f["t_ms"] - t))
         if abs(f["t_ms"] - target) <= step_ms / 2 and f["idx"] not in used:

@@ -47,8 +47,10 @@ def main(cfg: DictConfig) -> None:
     with zipfile.ZipFile(cfg.annotation.images_zip) as zf, out.open("a") as fh:
         for cid in tqdm([c for c in clips if c not in done], desc=v.run_name):
             info = index[cid]
-            start = info["frames"][0]["t_ms"] + crop[cid]
-            frames = select_frames(info["frames"], start, v.n_frames, v.step_ms)
+            frames = select_frames(
+                info["frames"], info["frames"][0]["t_ms"] + crop[cid], v.n_frames, v.step_ms
+            )
+            start = frames[0]["t_ms"]  # times are relative to the first frame shown
             ims = [Image.open(io.BytesIO(zf.read(f["file"]))).convert("RGB") for f in frames]
             rel = [f["t_ms"] - start for f in frames]
             res = runner.generate(build_messages(ims, rel, info["role"]))
