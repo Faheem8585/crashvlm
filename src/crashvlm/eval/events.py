@@ -18,6 +18,7 @@ Metrics per event:
 
 from __future__ import annotations
 
+import zlib
 from collections import defaultdict
 from dataclasses import dataclass
 
@@ -148,3 +149,13 @@ def constant_baseline(train: list[GT]) -> dict[tuple[str, str, str], float | Non
 
 def apply_constant(table, gts: list[GT]) -> dict:
     return {(g.clip_id, g.event): table.get((g.event, g.config, g.role)) for g in gts}
+
+
+def window_crops(clip_ids, jitter_ms: float, seed: int) -> dict[str, float]:
+    """Seeded random crop (ms removed from each clip's start) for the 't0 unknown' setting.
+    Shared by M3 and M4 so every method sees the same windows."""
+    # seeded per clip id, so a clip gets the same window whatever set it is evaluated in
+    return {
+        c: float(np.random.default_rng([seed, zlib.crc32(c.encode())]).uniform(0, jitter_ms))
+        for c in set(clip_ids)
+    }

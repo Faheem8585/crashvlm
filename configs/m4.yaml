@@ -1,0 +1,20 @@
+# M4: zero-shot video VLMs producing a structured crash report.
+defaults:
+  - m3
+  - _self_
+
+vlm:
+  model: Qwen/Qwen3.5-4B
+  load_in_4bit: false
+  adapter: null              # M5: path or hub id of a LoRA adapter
+  run_name: qwen3.5-4b_zs    # output: <data>/vlm/<run_name>.jsonl
+  splits: [test]
+  n_frames: 24               # ablation: 12 / 24 / 48
+  step_ms: 8                 # 24 frames x 8 ms = 184 ms window after the (cropped) start
+  max_side: 384              # ablation: 256 / 384 / 512
+  max_new_tokens: 512
+  limit: null                # first N clips (smoke runs)
+
+m4:
+  runs: [qwen3.5-4b_zs, qwen3-vl-8b-4bit_zs]
+  out: reports/m4

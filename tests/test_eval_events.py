@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from crashvlm.eval.events import GT, apply_constant, constant_baseline, evaluate
+from crashvlm.eval.events import GT, apply_constant, constant_baseline, evaluate, window_crops
 from crashvlm.models.probe import frame_targets
 
 
@@ -49,3 +49,10 @@ def test_frame_targets():
     t = np.array([-10, -2, 6, 14, 22, 30], dtype=float)
     assert frame_targets(t, 14.0).tolist() == [0, 0, 0, 1, 1, 1]
     assert frame_targets(t, None).tolist() == [0] * 6
+
+
+def test_window_crops_depend_only_on_clip_and_seed():
+    a = window_crops(["1_exterior", "2_occupant"], 40, seed=42)
+    b = window_crops(["2_occupant", "9_exterior", "1_exterior"], 40, seed=42)
+    assert a["1_exterior"] == b["1_exterior"] and 0 <= a["1_exterior"] <= 40
+    assert window_crops(["1_exterior"], 40, seed=1)["1_exterior"] != a["1_exterior"]

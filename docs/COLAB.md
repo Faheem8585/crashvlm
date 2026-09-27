@@ -106,3 +106,32 @@ Expected output: `200 clips -> /content/drive/MyDrive/crashvlm/data/features/goo
 ```bash
 uv run python scripts/run_m3.py
 ```
+
+## M4: zero-shot VLM crash reports (GPU; T4 16 GB or L4 24 GB)
+
+Same Drive layout as M3 (`images.zip` + `clip_index.json`). The selection is read from the repo.
+bitsandbytes is only needed for the 4-bit run.
+
+```python
+!pip -q install -e ".[ml]" bitsandbytes accelerate
+```
+
+```python
+# Qwen3.5-4B in bf16 (~9 GB VRAM): 46 test clips
+!python scripts/run_vlm.py vlm.model=Qwen/Qwen3.5-4B vlm.run_name=qwen3.5-4b_zs
+```
+
+```python
+# Qwen3-VL-8B in 4-bit NF4 (~7 GB VRAM)
+!python scripts/run_vlm.py vlm.model=Qwen/Qwen3-VL-8B-Instruct vlm.load_in_4bit=true vlm.run_name=qwen3-vl-8b-4bit_zs
+```
+
+Each run appends to `$CRASHVLM_DATA/vlm/<run_name>.jsonl`, so it can simply be re-run after a
+disconnect. Copy the two JSONL files into `~/crashvlm_data/vlm/` on the Mac, then:
+
+```bash
+uv run python scripts/eval_vlm.py
+```
+
+A T4 has no native bf16. If Qwen3.5-4B fails to load or is very slow there, use an L4 runtime,
+or Kaggle's P100/T4.

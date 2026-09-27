@@ -29,7 +29,7 @@ from omegaconf import DictConfig, OmegaConf
 from crashvlm.annotation.direct import records_from_labels
 from crashvlm.annotation.ontology import Ontology
 from crashvlm.data.manifest import load_clip_metas
-from crashvlm.eval.events import build_ground_truth, evaluate
+from crashvlm.eval.events import build_ground_truth, evaluate, window_crops
 from crashvlm.models.probe import decode, frame_targets, probe_curve, train_probe, zero_shot_curve
 
 
@@ -51,12 +51,6 @@ def load_features(path: Path):
 
 def score(metrics: dict) -> float:
     return float(np.nanmean([metrics["f1"], metrics.get("hit@16", np.nan)]))
-
-
-def crops_for(gts, jitter: float, seed: int) -> dict[str, float]:
-    """Seeded random crop (ms removed from the clip start) per test clip."""
-    rng = np.random.default_rng(seed)
-    return {c: float(rng.uniform(0, jitter)) for c in sorted({g.clip_id for g in gts})}
 
 
 def decode_all(curves, gts, thr, mc, crop=None) -> dict:
@@ -184,7 +178,7 @@ def main(cfg: DictConfig) -> None:
     all_gts = list({(g.clip_id, g.event): g for gts in settings.values() for g in gts}.values())
     sp = {s: [g for g in all_gts if split[g.test_no] == s] for s in ("train", "val", "test")}
     test_sets = {n: [g for g in gts if split[g.test_no] == "test"] for n, gts in settings.items()}
-    crop = crops_for(test_sets["t0 unknown"], mc.window_jitter_ms, mc.seed)
+    crop = window_crops([g.clip_id for g in test_sets["t0 unknown"]], mc.window_jitter_ms, mc.seed)
 
     methods: dict[str, tuple[dict, dict]] = {}
     for slug in mc.backbones:
