@@ -68,3 +68,21 @@ time: a frame counter was taken as the time series (fix `b6418a6`). Some Calspan
 no time at all, only "T0: <frame>" (fix `aa0074a`). Six clips were reprocessed; one existing
 label (7639 exterior) was moved to the corrected axis. All 200 clips now carry
 `code_version` ≥ `b6418a6`.
+
+## Pass A complete: known limitations of the labels
+
+Generated summary: `reports/annotation/label_stats.md`.
+
+- **Timing resolution is 8 ms, and labels cluster on the same tiles.** Median onsets fall exactly
+  on sheet tiles (e.g. frontal airbag +22 ms, side airbag +14 ms, frontal head contact +46 ms),
+  with interquartile ranges at or near zero. Part of this is real: NCAP protocols fix speed and
+  sensor timing. Part is probably annotator prior: the same tile gets picked when the true onset
+  lies between tiles. **Consequence:** timing metrics use tolerances of at least 8 ms, and no
+  claim is made about differences between vehicles below 8 ms.
+- **`max_deformation` clusters at 70 ms (frontal) and 62/78 ms (side, pole).** This confirms the
+  tier-C decision; the accelerometer-based replacement is required before the label is used.
+- **`visual_severity` never uses "low"** (125 medium, 75 high): uninformative as a target, as
+  already decided.
+- **`fire_or_fluid_leak` is "no" for all 200 clips.** Airbag smoke and red dummy-marker powder
+  appear in several clips and are noted as *not* fire, so this is the hallucination probe the
+  ontology intended.
