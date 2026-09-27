@@ -148,6 +148,48 @@ def number_macros() -> None:
     )
 
 
+def readme_results() -> None:
+    """Fill the README results block from reports/m3 and reports/m4 (markdown)."""
+    res = json.loads(Path("reports/m3/results.json").read_text())
+    events = [
+        "impact_onset",
+        "airbag_deploy_start",
+        "head_contact",
+        "windshield_crack_onset",
+        "side_glass_break_onset",
+    ]
+    lines = [
+        "Hit@16 (share of test events timed within 16 ms; misses count) on the 23-test split.",
+        "**t0 unknown**: clips cropped at a random start, as for any real video.\n",
+        "| Method | " + " | ".join(EV[e] for e in events) + " |",
+        "|---|" + "---|" * len(events),
+    ]
+    for key, name in METHODS:
+        per = res.get(f"t0 unknown | {key}")
+        if per is None:
+            vals = ["pending (GPU)"] * len(events)
+        else:
+            vals = [f"{per[e]['hit@16']:.2f}" if e in per else "–" for e in events]
+        lines.append(f"| {name} | " + " | ".join(vals) + " |")
+    blind_known = res["t0 known | blind (no video)"]
+    lines.append(
+        "\nWith the lab clock (**t0 known**), the blind no-video baseline scores "
+        f"{blind_known['airbag_deploy_start']['hit@16']:.2f} (airbag) and "
+        f"{blind_known['head_contact']['hit@16']:.2f} (head contact).\n"
+    )
+    m4 = Path("reports/m4/results.json")
+    lines.append(
+        "VLM crash reports (Qwen3.5-4B / Qwen3-VL-8B, zero-shot and LoRA): "
+        + ("see `reports/m4/results.md`." if m4.exists() else "pending (GPU).")
+    )
+    block = "\n".join(lines)
+    readme = Path("README.md").read_text()
+    a, b = "<!-- results:start -->", "<!-- results:end -->"
+    start, end = readme.index(a) + len(a), readme.index(b)
+    Path("README.md").write_text(readme[:start] + "\n" + block + "\n" + readme[end:])
+
+
 if __name__ == "__main__":
     main()
     number_macros()
+    readme_results()
