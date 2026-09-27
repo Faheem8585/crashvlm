@@ -86,3 +86,21 @@ Generated summary: `reports/annotation/label_stats.md`.
 - **`fire_or_fluid_leak` is "no" for all 200 clips.** Airbag smoke and red dummy-marker powder
   appear in several clips and are noted as *not* fire, so this is the hallucination probe the
   ontology intended.
+
+## Check 3: repeat pass by an independent Opus instance (30 IAA clips)
+
+A fresh Opus sub-agent, the same model family as the primary annotator, labelled the 30 IAA clips
+blind, in shuffled order. Report: `reports/annotation/opus_repeat_iaa.md`.
+
+- **Timed events are highly consistent:** impact onset 30/30 identical; airbag onset presence
+  kappa 0.93, 18/18 within 8 ms; head contact kappa 0.86, 10/11 within 8 ms.
+- **Glass events are the weak spot:** windshield-crack presence kappa 0.38, side-glass kappa
+  0.53. Most disagreements are the same judgement call on side-view cameras: is the web of cracks
+  in the upper corner windshield or front side window? The second annotator flagged exactly these
+  clips as uncertain.
+- **Same-model agreement is inflated where the task is subjective.** `max_deformation` agrees to
+  0 ms on all 15 clips here, but was systematically 24 ms later for the Sonnet annotator.
+  `visual_severity` gets kappa 0.93 here versus about 0.2 against Sonnet. Two runs of the same
+  model share its priors, so this check measures *reproducibility*, not *correctness*. The
+  tier-C decisions stand, and cross-model agreement (checks 1-2) is the more honest quality
+  number.
