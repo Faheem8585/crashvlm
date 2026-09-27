@@ -14,13 +14,15 @@ dependencies = [
     "pillow>=10.4",
     "pyarrow>=16.0",
     "rapidocr-onnxruntime>=1.4.4",
+    "scikit-learn>=1.5",
+    "tabulate>=0.9",
     "requests>=2.32",
     "tqdm>=4.66",
 ]
 
 [project.optional-dependencies]
 # GPU / model work (M2 zero-shot pre-labels onward). On Colab: pip install -e ".[ml]"
-ml = ["torch>=2.4", "transformers>=4.56", "sentencepiece>=0.2", "protobuf>=4"]
+ml = ["torch>=2.4", "torchvision>=0.19", "transformers>=4.56", "sentencepiece>=0.2", "protobuf>=4"]
 
 [dependency-groups]
 dev = ["pytest>=8.3", "ruff>=0.6"]
