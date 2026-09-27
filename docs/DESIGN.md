@@ -93,3 +93,26 @@ flowchart LR
 | Pass B unassisted, ≥ 7 days later | One annotator can only measure intra-rater reliability. Leaving pre-labels out of pass B makes any anchoring effect visible instead of hiding it. |
 | `fire_or_fluid_leak` kept although almost always "no" | Not a detection target: it is the ground truth for the M6 hallucination probe. |
 | Free CVAT cloud plan (1 project, 3 tasks, 1 GB) | The two passes use two tasks; self-hosting CVAT in Docker needs more disk than is free. |
+
+## M7: serving
+
+- **Two backends behind one API** (`POST /evaluate_video` → report + event timeline):
+  - `probe` (SigLIP 2 embeddings + the linear probes exported by `scripts/export_probes.py`)
+    runs on a laptop CPU in about 20 s per clip;
+  - `vlm` (Qwen, optionally with the LoRA adapter) needs a GPU.
+
+  Both return the M4 report schema, so clients do not care which one answered.
+- **Times are relative to the first analysed frame**, as in the 't0 unknown' evaluation.
+  The service never assumes an impact time. If the burned-in overlay time can be read, it sets
+  the frame rate (`meta.time_source = "ocr"`); otherwise 1000 fps is assumed and reported as
+  such (`"assumed_1000fps"`).
+- **Same preprocessing as training.** The API reuses the M1 overlay removal. On a real test clip,
+  the API's frames and the stored training frames give nearly identical SigLIP embeddings
+  (cosine 0.986), so demo behaviour is model behaviour, not a pipeline artefact.
+- **Known failure seen in the demo:** on test clip 8212 (driver close-up), the airbag and
+  windshield probes fire on the first two frames, so they report 0 ms. Scores are the same on
+  the stored training frames. This is a real probe false positive, already counted in the M3
+  metrics, and deliberately not tuned away on test data.
+- **Docker:** CPU-only image for the probe backend (`Dockerfile`). Probes are mounted, not baked
+  in, because they derive from data the repo does not redistribute. *The image has not yet been
+  built on the development machine (disk space); CI covers the API with a fake backend.*

@@ -135,3 +135,38 @@ uv run python scripts/eval_vlm.py
 
 A T4 has no native bf16. If Qwen3.5-4B fails to load or is very slow there, use an L4 runtime,
 or Kaggle's P100/T4.
+
+## M5: LoRA fine-tuning (GPU; L4 24 GB recommended)
+
+On the Mac, build the instruction data first and upload `~/crashvlm_data/sft/` to
+`MyDrive/crashvlm/data/sft/`:
+
+```bash
+uv run python scripts/build_sft.py
+uv run python scripts/build_sft.py sft.train_fraction=0.25
+uv run python scripts/build_sft.py sft.train_fraction=0.5
+```
+
+On Colab (same setup cells as M4):
+
+```python
+# full training set: 122 clips x 4 crops = 488 examples, 3 epochs
+!python scripts/train_lora.py vlm.model=Qwen/Qwen3.5-4B vlm.run_name=qwen3.5-4b_lora
+```
+
+```python
+# evaluate the adapter on the test split (same crops as M3/M4)
+!python scripts/run_vlm.py vlm.model=Qwen/Qwen3.5-4B vlm.adapter=$CRASHVLM_DATA/lora/qwen3.5-4b_lora/adapter vlm.run_name=qwen3.5-4b_lora
+```
+
+```python
+# learning curve (optional): 25 % and 50 % of the training tests
+for f in ["0.25", "0.5"]:
+    !python scripts/train_lora.py sft.train_file=train_f{f}.jsonl vlm.run_name=qwen3.5-4b_lora_f{f}
+    !python scripts/run_vlm.py vlm.adapter=$CRASHVLM_DATA/lora/qwen3.5-4b_lora_f{f}/adapter vlm.run_name=qwen3.5-4b_lora_f{f}
+```
+
+Copy `vlm/*.jsonl` and `lora/*/train_log.json` back to `~/crashvlm_data/`, add the run names
+to `m4.runs` and run `uv run python scripts/eval_vlm.py`. To push an adapter to the Hugging
+Face Hub: `huggingface-cli login`, then
+`huggingface-cli upload <user>/crashvlm-qwen3.5-4b-lora $CRASHVLM_DATA/lora/qwen3.5-4b_lora/adapter`.

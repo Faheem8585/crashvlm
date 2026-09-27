@@ -1,0 +1,11 @@
+# M7: API and demo.
+defaults:
+  - m3
+  - _self_
+
+serve:
+  backbone: google__siglip2-base-patch16-224    # probes + embedder used by the CPU backend
+  hub_model: google/siglip2-base-patch16-224
+  step_ms: 8
+  max_frames: 60                                  # 60 x 8 ms = 480 ms analysed
+  use_ocr: true                                   # read the burned-in time if present
