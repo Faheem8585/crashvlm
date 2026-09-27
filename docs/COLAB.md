@@ -71,3 +71,38 @@ on the Mac, then rebuild the pass A pre-labels:
 ```bash
 uv run python scripts/make_cvat_tasks.py annotation.zero_shot_preds=data/annotation/zero_shot_preds.jsonl
 ```
+
+## M3: SigLIP 2 so400m embeddings (GPU, ~5 min on a T4)
+
+The large model (4.5 GB) does not fit on the Mac's free disk, so only this step runs on Colab.
+Everything else in M3 runs locally on CPU from the resulting `.npz`.
+
+Upload `~/crashvlm_data/annotation/pass_a/images.zip` (469 MB) and
+`~/crashvlm_data/annotation/clip_index.json` to `MyDrive/crashvlm/data/annotation/` (keep the
+`pass_a/` subfolder). Then, in a **GPU runtime**:
+
+```python
+!git clone https://github.com/<github-user>/crashvlm.git
+%cd crashvlm
+!pip -q install -e ".[ml]"
+```
+
+```python
+import os
+
+from google.colab import drive
+
+drive.mount("/content/drive")
+os.environ["CRASHVLM_DATA"] = "/content/drive/MyDrive/crashvlm/data"
+```
+
+```python
+!python scripts/extract_embeddings.py
+```
+
+Expected output: `200 clips -> /content/drive/MyDrive/crashvlm/data/features/google__siglip2-so400m-patch14-384.npz`
+(about 20 MB). Download it into `~/crashvlm_data/features/` on the Mac, then:
+
+```bash
+uv run python scripts/run_m3.py
+```
