@@ -3,7 +3,7 @@ name = "crashvlm"
 version = "0.1.0"
 description = "Vision-language evaluation of vehicle crash test videos (NHTSA NCAP)."
 readme = "README.md"
-requires-python = ">=3.11,<3.13"
+requires-python = ">=3.11,<3.14"
 license = { text = "MIT" }
 authors = [{ name = "Muhammad Faheem Arshad" }]
 dependencies = [
@@ -13,7 +13,9 @@ dependencies = [
     "pandas>=2.2",
     "pillow>=10.4",
     "pyarrow>=16.0",
-    "rapidocr-onnxruntime>=1.4.4",
+    # OCR of burned-in overlay time (data pipeline, API); no wheels for Python 3.13 yet, which
+    # only affects Colab, where the GPU steps do not need it
+    "rapidocr-onnxruntime>=1.4.4; python_version < '3.13'",
     "scikit-learn>=1.5",
     "tabulate>=0.9",
     "requests>=2.32",
