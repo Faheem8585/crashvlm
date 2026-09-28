@@ -1,14 +1,18 @@
 # Running on Colab / Kaggle
 
+**Easiest path:** open `notebooks/colab_gpu.ipynb` in Colab (File → Upload notebook, or open it
+from GitHub) and run it top to bottom. The repo is private: add a GitHub token as the Colab
+secret `GITHUB_TOKEN`. The cells below are the same steps, one by one.
+
 M1 needs no GPU. It runs locally (~10 s per clip on an M-series Mac, ~6 MB disk per clip) or on
 Colab when local disk is short. Frames go to Google Drive so later GPU milestones can reuse them.
 
-Replace `<github-user>` once the repo is pushed.
+Replace `Faheem8585` once the repo is pushed.
 
 ```python
 # 1. environment
 !pip -q install uv
-!git clone https://github.com/<github-user>/crashvlm.git
+!git clone https://github.com/Faheem8585/crashvlm.git
 %cd crashvlm
 !uv sync --locked
 ```
@@ -46,7 +50,7 @@ Upload `data/annotation/pass_a/images.zip` and `data/annotation/clip_index.json`
 to `MyDrive/crashvlm/data/annotation/` (same relative layout). Then, in a GPU runtime:
 
 ```python
-!git clone https://github.com/<github-user>/crashvlm.git
+!git clone https://github.com/Faheem8585/crashvlm.git
 %cd crashvlm
 !pip -q install -e ".[ml]"   # reuses Colab's preinstalled torch
 ```
@@ -82,7 +86,7 @@ Upload `~/crashvlm_data/annotation/pass_a/images.zip` (469 MB) and
 `pass_a/` subfolder). Then, in a **GPU runtime**:
 
 ```python
-!git clone https://github.com/<github-user>/crashvlm.git
+!git clone https://github.com/Faheem8585/crashvlm.git
 %cd crashvlm
 !pip -q install -e ".[ml]"
 ```
