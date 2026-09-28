@@ -65,3 +65,17 @@ crash tests, so confidence intervals are wide. Pending GPU runs are listed at th
     vehicle's velocity is zero. Measuring it from video needs tracking of the body (e.g. the
     photogrammetry targets on NCAP vehicles), which is a concrete PhD-level direction:
     video-derived kinematics validated against accelerometers.
+11. **Video kinematics recover the measured time of maximum crush in frontal tests**
+    (`reports/physics/flow_{train,val,test}.md`). Pyramidal Lucas-Kanade optical flow on the
+    rear of the visible body gives the vehicle's image velocity, and maximum crush is where it
+    stops. The method is clock-free and has one bias correction estimated on train (+3.1 ms).
+    - Designed on 23 training tests: rank correlation with the accelerometer time 0.71, versus
+      -0.12 for the blind constant.
+    - On the 12 held-out frontal tests (6 val, 6 test; the test clips were additionally cropped
+      at a random start), every prediction is within 8 ms of the accelerometer time. The test
+      median error is 0.9 ms. The method also catches the outlier (test 10039: 49 ms measured,
+      51 ms from video, 95 ms blind).
+    - This is the first result in the project where a vision method is validated against a
+      physical measurement rather than a visual label.
+    - Scope: frontal side-on views only, n = 12 held out; side and pole views need a different
+      camera geometry.
