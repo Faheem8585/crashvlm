@@ -186,6 +186,11 @@ three subsets).}\label{tab:lc}
 \input{tables/m6_learning_curve}
 \end{table}
 
+\textbf{Temporal context.} A small dilated temporal CNN over frozen embeddings, trained with
+random start crops, helps airbag timing with ResNet-50 features but not other events, and varies
+strongly between seeds (\texttt{reports/m3/temporal.md}). With 63 training tests, learned
+temporal models over-fit.
+
 \textbf{Structured VLM reports (Tab.~\ref{tab:vlm}).} \pending{} Zero-shot and LoRA-adapted
 Qwen reports, scored on the same test clips and crops: event timing (comparable to
 Tab.~\ref{tab:unknown}), test-type accuracy against NHTSA metadata, and hallucination rates.

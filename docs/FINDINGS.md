@@ -79,3 +79,10 @@ crash tests, so confidence intervals are wide. Pending GPU runs are listed at th
       physical measurement rather than a visual label.
     - Scope: frontal side-on views only, n = 12 held out; side and pole views need a different
       camera geometry.
+12. **Temporal context helps one event, inconsistently** (`reports/m3/temporal.md`). A small
+    dilated temporal CNN over frozen frame embeddings (receptive field about 120 ms, random-crop
+    training, 3 seeds) raises airbag hit@16 with ResNet-50 features from 0.45 (probe) to
+    0.75 ± 0.05. It does not improve impact or head contact, is worse for glass events, and is
+    unstable with SigLIP features (airbag 0.42 ± 0.39). With 63 training tests, temporal models
+    over-fit. The learning curve (finding 4) and this result both say the data are too small for
+    learned temporal models, which is exactly where physics-based kinematics (finding 11) help.
