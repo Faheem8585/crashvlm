@@ -94,8 +94,15 @@ def main(cfg: DictConfig) -> None:
         )
         + f" Flow bias correction (median training error): {bias:+.1f} ms.\n",
     ]
+    summary = {"split": split_name, "n": len(d), "bias_ms": bias, "cropped": bool(crop)}
     for name in ("flow_ms", "blind_ms"):
         e = (d[name] - d.physics_ms).dropna()
+        summary[name[:-3]] = {
+            "median_abs_err_ms": float(e.abs().median()),
+            "within_8": float((e.abs() <= 8).sum() / len(d)),
+            "within_16": float((e.abs() <= 16).sum() / len(d)),
+            "spearman": float(spearmanr(d.dropna()[name], d.dropna().physics_ms)[0]),
+        }
         det = d[name].notna().mean()
         rho, p = spearmanr(d.dropna()[name], d.dropna().physics_ms)
         lines.append(
@@ -109,6 +116,7 @@ def main(cfg: DictConfig) -> None:
     out = Path("reports/physics")
     out.mkdir(parents=True, exist_ok=True)
     (out / f"flow_{split_name}.md").write_text("\n".join(lines) + "\n")
+    (out / f"flow_{split_name}.json").write_text(json.dumps(summary, indent=1))
     print("\n".join(lines[:4]))
 
 

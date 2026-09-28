@@ -1,0 +1,18 @@
+{
+ "split": "test",
+ "n": 6,
+ "bias_ms": 3.084015751585227,
+ "cropped": true,
+ "flow": {
+  "median_abs_err_ms": 0.8893555463015446,
+  "within_8": 1.0,
+  "within_16": 1.0,
+  "spearman": 0.9856107606091624
+ },
+ "blind": {
+  "median_abs_err_ms": 31.660660874144213,
+  "within_8": 0.0,
+  "within_16": 0.16666666666666666,
+  "spearman": 0.550782483869826
+ }
+}

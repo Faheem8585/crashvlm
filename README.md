@@ -71,7 +71,11 @@ VLM crash reports (Qwen3.5-4B / Qwen3-VL-8B, zero-shot and LoRA): pending (GPU).
    poorly and fail on glass breakage. Probes on the same features are consistently better.
 4. **More labels barely move frozen-feature probes.** The bottleneck is the frozen features
    and the decoder, which is why LoRA adaptation is the next step.
-5. **Data work beat model work.** Burned-in timestamps and a red→green impact lamp would have
+5. **Video can be checked against physics.** The car's own accelerometers give the measured
+   moment of maximum crush for 94 tests. Visual labels and appearance-based models could not
+   find it. Optical flow on the car body does: within 8 ms in all 12 held-out frontal tests,
+   without using the lab clock ([reports/physics](reports/physics)).
+6. **Data work beat model work.** Burned-in timestamps and a red→green impact lamp would have
    leaked the labels. Two OCR time-parsing bugs shifted 8 clips by about 50 ms. Same-model label
    agreement overstated reliability. Each was caught by an explicit check.
 

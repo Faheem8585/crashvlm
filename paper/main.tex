@@ -29,7 +29,11 @@ that never sees the video times airbag deployment within 16\,ms in \BlindAirbagK
 cases once the laboratory clock is known. Timing benchmarks on standardised crash tests are
 therefore only informative without the clock. In that setting, linear probes on frozen SigLIP~2
 features beat the blind baseline (airbag: \ProbeAirbagUnknown{} vs.\ \BlindAirbagUnknown{} hit@16),
-while zero-shot text prompting times events poorly. We further report LoRA-adapted video VLMs
+while zero-shot text prompting times events poorly. Grounding the video in the vehicles'
+own accelerometers, we derive the measured time of maximum crush for \NPhysics{} tests and show
+that clock-free optical flow on the vehicle body recovers it within 8\,ms in
+\FlowHeldOutWithinEight{} of \NFlowHeldOut{} held-out frontal tests, where visual labels and
+appearance probes fail. We further report LoRA-adapted video VLMs
 producing structured crash reports \pending{}, a hallucination analysis, and a label-quality
 protocol for model-produced annotations.
 \end{abstract}
@@ -65,6 +69,8 @@ model-annotator protocol and cross-model agreement checks.
 and a \emph{t0-unknown} protocol that removes it.
 \item Baselines from blind to probe to zero-shot VLM to LoRA-adapted VLM, with hallucination and
 efficiency analysis \pending{}.
+\item Physics ground truth from NHTSA sensor data and a clock-free video-kinematics method
+validated against it.
 \end{itemize}
 
 \section{Related work}
@@ -195,6 +201,31 @@ absent.}\label{tab:vlm}
 HIC beyond chance (repository, \texttt{reports/m6/severity.md}). Whether VLM severity ratings
 track the measurements is \pending{}.
 
+\section{Physics grounding}
+NHTSA publishes the instrumented channels of each test (ISO-MME). We integrate structural
+accelerations from the lab-measured impact speed. For frontal and pole tests, maximum dynamic
+crush is where the velocity towards the obstacle reaches zero. For side tests with the moving
+barrier, it is where barrier and vehicle velocities meet; for a yawing vehicle that never quite
+meets the barrier velocity, we take the minimum of the closing velocity. This gives a
+\emph{measured} time of maximum crush for \NPhysics{} of \NTests{} tests. Dynamic crush exceeds
+NHTSA's residual crush, as rebound implies (\texttt{reports/physics/checks.md}).
+
+\textbf{Visual labels vs.\ physics.} Against the measured times, the annotated
+``maximum deformation'' frames are no closer than a constant per test type, which confirms that
+this label cannot be read reliably from the video by eye.
+
+\textbf{Video kinematics.} Frame-appearance probes trained on the measured time fail (below the
+blind baseline). Maximum crush is a kinematic turning point, not an appearance. Tracking the
+body instead does work. We run pyramidal Lucas--Kanade optical flow on the rear part of the
+visible body in the frontal side view and find where its horizontal velocity stops. The method
+is clock-free, with one bias of \FlowBias{}\,ms estimated on training tests. Designed on the
+training split, it tracks the vehicle-to-vehicle variation of the measured time (Spearman
+\FlowTrainRho{} vs.\ \BlindTrainRho{} for the blind constant). On the \NFlowHeldOut{} held-out
+frontal tests it is within 8\,ms of the accelerometer time in \FlowHeldOutWithinEight{} cases,
+with a median test error of \FlowTestMedErr{}\,ms, including an early outlier the constant
+misses. It is the one vision result in this work validated against a physical measurement
+rather than a label. The scope is small (frontal view, 12 tests).
+
 \section{Limitations}
 \begin{itemize}\setlength\itemsep{0pt}
 \item \textbf{Model-produced labels.} All annotations come from a language model. Cross-model
@@ -205,6 +236,7 @@ within the confidence intervals.
 \item \textbf{Narrow domain.} US NCAP only: fixed protocols, five laboratories, and camera setups
 that can identify the laboratory.
 \item \textbf{8\,ms resolution} and annotator clustering on tiles; no claims below 8\,ms.
+\item \textbf{Physics grounding is partial.} Sensor targets exist for one event (maximum crush); video kinematics are validated for frontal views only.
 \item \textbf{No geometry yet.} The simulation and geometric-deep-learning link
 (PointNet++~\citep{qi2017pointnetpp}, mesh GNNs~\citep{pfaff2020meshgraphnets}) is future work.
 \end{itemize}
@@ -213,7 +245,7 @@ that can identify the laboratory.
 Reading crash test video with open models is feasible, but benchmarks on standardised tests must
 remove the clock before model comparisons mean anything. The next steps are:
 \begin{itemize}\setlength\itemsep{0pt}
-\item replace visual ``maximum deformation'' with accelerometer-derived timing;
+\item extend video kinematics to side and pole views and to crush \emph{depth} (scaled flow vs.\ integrated acceleration), via the photogrammetry targets on NCAP vehicles;
 \item add a human-verified label subset;
 \item connect video evidence to simulation, by rendering explicit-solver runs of parametric
 crash structures and asking whether the same models transfer from simulation to physical

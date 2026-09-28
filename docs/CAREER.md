@@ -23,6 +23,10 @@ follow-up question.
   integration, model-produced labels, and blind cross-model agreement checks (airbag onset
   kappa 0.93, 18/18 within 8 ms on repeat). The checks exposed that same-model agreement
   overstates reliability on subjective labels.
+- **Grounded video analysis in physics.** I derived the measured time of maximum crush for 94
+  NHTSA tests by integrating the vehicles' accelerometer data (ISO-MME), and showed that
+  clock-free optical flow on the car body recovers it within 8 ms in 12/12 held-out frontal
+  tests (median test error 0.9 ms), where visual labels and appearance-based probes failed.
 - **Implemented VLM crash reporting.** Qwen3.5-4B and Qwen3-VL-8B (4-bit) write structured JSON
   reports, with LoRA fine-tuning (PEFT), a hallucination probe and a FastAPI + Gradio service
   with a Docker image. **[after GPU runs: add parse rate, test-type accuracy, fire
