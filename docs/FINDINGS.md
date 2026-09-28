@@ -41,3 +41,27 @@ crash tests, so confidence intervals are wide. Pending GPU runs are listed at th
 - SigLIP 2 so400m embeddings (the numbers above use the base model)
 - Qwen3.5-4B and Qwen3-VL-8B zero-shot reports (M4), LoRA fine-tuning and learning curve (M5)
 - VLM ablations (frames, resolution, prompt) and VLM severity vs crush/HIC (M6)
+
+## Physics ground truth from vehicle sensors (`reports/physics/`)
+
+8. **Measured time of maximum crush for 94 / 100 tests** (`reports/physics/checks.md`), from
+   integrated structural accelerations in NHTSA's ISO-MME exports:
+   - frontal and pole: the velocity towards the obstacle reaches zero;
+   - side MDB: barrier and vehicle velocities meet.
+
+   Frontal maximum crush is very consistent (median 70.8 ms). Dynamic crush exceeds NHTSA's
+   residual crush by a median factor of 1.33 (frontal) and 1.29 (pole), as expected from elastic
+   rebound. The rank correlation with residual crush is 0.31 (frontal) and 0.64 (pole). Unit
+   tests check the integration on synthetic signals with a known answer.
+9. **Visual "maximum deformation" labels carry no information beyond the protocol.** Against
+   the measured times, labels are no closer than a constant per test type (frontal: 3.5 vs
+   3.4 ms median error; pole: worse than the constant). Dropping this label from the headline
+   metrics (tier C) is confirmed, and the physics time replaces it.
+10. **Frame-appearance features cannot find the kinematic turning point**
+    (`reports/physics/probe_results.md`). Linear probes trained on the measured time reach
+    hit@16 of 0.15-0.20 on test, below the blind baseline even without the clock (0.35).
+    Whole-image motion energy (tried on the training split only) fails too: glass fragments,
+    airbag smoke and dummy motion swamp the vehicle's own motion. Maximum crush is where the
+    vehicle's velocity is zero. Measuring it from video needs tracking of the body (e.g. the
+    photogrammetry targets on NCAP vehicles), which is a concrete PhD-level direction:
+    video-derived kinematics validated against accelerometers.
