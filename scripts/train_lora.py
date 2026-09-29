@@ -50,10 +50,30 @@ def encode(processor, ex, zf, max_side):
     return full
 
 
+def answer_loss(model, batch):
+    """Cross-entropy on the answer tokens only, without materialising logits for the prompt.
+
+    The full logits (about 3000 positions x a 248k-token vocabulary) do not fit on a 16 GB GPU
+    next to the model. ``logits_to_keep`` makes the model compute only the last k positions:
+    the one before the first answer token and the answer itself."""
+    import torch.nn.functional as F
+
+    batch = dict(batch)
+    labels = batch.pop("labels")
+    n_prompt = int((labels[0] == -100).sum())
+    k = labels.shape[1] - n_prompt + 1
+    logits = model(**batch, logits_to_keep=k).logits[:, -k:-1]
+    target = batch["input_ids"][:, n_prompt:]
+    return F.cross_entropy(logits.float().reshape(-1, logits.shape[-1]), target.reshape(-1))
+
+
 @hydra.main(config_path="../configs", config_name="m5", version_base="1.3")
 def main(cfg: DictConfig) -> None:
+    import os
+
     from crashvlm.models.compat import hide_old_torchao
 
+    os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
     hide_old_torchao()
     import torch
     from peft import LoraConfig, get_peft_model
@@ -130,7 +150,7 @@ def main(cfg: DictConfig) -> None:
         with torch.no_grad():
             for ex in val:
                 batch = encode(processor, ex, zf, s.max_side).to(device)
-                losses.append(float(model(**batch).loss))
+                losses.append(float(answer_loss(model, batch)))
         model.train()
         return sum(losses) / len(losses)
 
@@ -141,7 +161,7 @@ def main(cfg: DictConfig) -> None:
         running = 0.0
         for i, ex in enumerate(train):
             batch = encode(processor, ex, zf, s.max_side).to(device)
-            loss = model(**batch).loss / s.grad_accum
+            loss = answer_loss(model, batch) / s.grad_accum
             loss.backward()
             running += float(loss.detach())
             if (i + 1) % s.grad_accum == 0 or i + 1 == len(train):
