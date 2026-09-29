@@ -19,6 +19,9 @@ class VLMRunner:
         max_new_tokens: int = 512,
         adapter: str | None = None,
     ):
+        from crashvlm.models.compat import hide_old_torchao
+
+        hide_old_torchao()
         import torch
         from transformers import AutoModelForImageTextToText, AutoProcessor
 

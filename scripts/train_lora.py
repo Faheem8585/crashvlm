@@ -52,6 +52,9 @@ def encode(processor, ex, zf, max_side):
 
 @hydra.main(config_path="../configs", config_name="m5", version_base="1.3")
 def main(cfg: DictConfig) -> None:
+    from crashvlm.models.compat import hide_old_torchao
+
+    hide_old_torchao()
     import torch
     from peft import LoraConfig, get_peft_model
     from transformers import AutoModelForImageTextToText, AutoProcessor
