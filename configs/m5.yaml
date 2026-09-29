@@ -20,3 +20,4 @@ sft:
   gradient_checkpointing: true
   max_steps: -1              # >0 for smoke runs
   val_limit: null            # first N validation examples (smoke runs)
+  time_budget_h: null        # stop training after this many hours (Kaggle: 12 h per session)

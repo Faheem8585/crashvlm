@@ -41,6 +41,7 @@ packages = ["src/crashvlm"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+extend-exclude = ["notebooks"]   # Colab/Kaggle runner cells, not library code
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM"]

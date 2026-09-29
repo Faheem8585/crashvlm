@@ -114,6 +114,13 @@ def main(cfg: DictConfig) -> None:
     t_start = time.time()
     zf = zipfile.ZipFile(cfg.annotation.images_zip)
 
+    def write_log() -> None:  # after every epoch, so a killed run still leaves a log
+        log["best_val_loss"] = best
+        log["train_minutes"] = (time.time() - t_start) / 60
+        if cuda:
+            log["peak_vram_gb"] = torch.cuda.max_memory_allocated() / 2**30
+        (out / "train_log.json").write_text(json.dumps(log, indent=1))
+
     def val_loss() -> float:
         model.eval()
         losses = []
@@ -147,19 +154,21 @@ def main(cfg: DictConfig) -> None:
                 if s.max_steps > 0 and step >= s.max_steps:
                     done = True
                     break
+                if s.time_budget_h and time.time() - t_start > s.time_budget_h * 3600:
+                    print(f"time budget of {s.time_budget_h} h reached at step {step}")
+                    log["stopped_by_time_budget"] = True
+                    done = True
+                    break
         vl = val_loss()
         log["val"].append({"epoch": epoch, "step": step, "val_loss": vl})
         print(f"epoch {epoch}: val loss {vl:.4f}")
         if vl < best:
             best = vl
             model.save_pretrained(out / "adapter")
+        write_log()
         if done:
             break
-    log["best_val_loss"] = best
-    log["train_minutes"] = (time.time() - t_start) / 60
-    if cuda:
-        log["peak_vram_gb"] = torch.cuda.max_memory_allocated() / 2**30
-    (out / "train_log.json").write_text(json.dumps(log, indent=1))
+    write_log()
     print(f"best val loss {best:.4f}; adapter -> {out / 'adapter'}")
 
 
