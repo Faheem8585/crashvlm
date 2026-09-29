@@ -36,10 +36,23 @@ crash tests, so confidence intervals are wide. Pending GPU runs are listed at th
    fire on the first two frames and report airbag and windshield crack at 0 ms. This is a real
    model error, identical on the training-pipeline frames.
 
+## VLM crash reports and the large encoder (`reports/m4/results.md`, `reports/m3/results.md`)
+
+13. **Zero-shot Qwen3.5-4B times airbag deployment best, but misplaces impact** (46 test clips,
+    t0 unknown, 24 frames at 8 ms):
+    - parse rate 1.00, no schema issues, no fire/leak hallucination;
+    - airbag onset hit@16 0.75 (CI 0.55–0.90), vs blind 0.35 and the best probe 0.70
+      (SigLIP 2 so400m). Predicted times vary per clip, so this is not a copied prior;
+    - impact onset hit@16 0.20 (median error 40 ms), below the blind baseline (0.45): the model
+      tends to put the impact tens of ms after the first frame;
+    - test-type accuracy 0.37 (hard from cabin views); 11 % of event claims contradict the labels;
+    - 104 s per clip on a free T4 (slow fallback kernels for its linear-attention layers).
+14. **The larger SigLIP 2 encoder (so400m) changes little**: airbag probe 0.70 (base 0.60),
+    impact 0.45 (base 0.55, ResNet-50 0.75); all within overlapping intervals at 23 test tests.
+
 ## Pending (needs a GPU; cells in docs/COLAB.md)
 
-- SigLIP 2 so400m embeddings (the numbers above use the base model)
-- Qwen3.5-4B and Qwen3-VL-8B zero-shot reports (M4), LoRA fine-tuning and learning curve (M5)
+- Qwen3-VL-8B zero-shot reports (M4), LoRA fine-tuning and learning curve (M5)
 - VLM ablations (frames, resolution, prompt) and VLM severity vs crush/HIC (M6)
 
 ## Physics ground truth from vehicle sensors (`reports/physics/`)

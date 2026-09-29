@@ -50,12 +50,12 @@ Hit@16 (share of test events timed within 16 ms; misses count) on the 23-test sp
 | ResNet-50 + probe | 0.75 | 0.45 | 0.44 | 0.50 | 0.27 |
 | SigLIP 2-B zero-shot | – | 0.45 | 0.33 | 0.25 | 0.00 |
 | SigLIP 2-B + probe | 0.55 | 0.60 | 0.50 | 0.62 | 0.27 |
-| SigLIP 2-So400m zero-shot | pending (GPU) | pending (GPU) | pending (GPU) | pending (GPU) | pending (GPU) |
-| SigLIP 2-So400m + probe | pending (GPU) | pending (GPU) | pending (GPU) | pending (GPU) | pending (GPU) |
+| SigLIP 2-So400m zero-shot | – | 0.35 | 0.28 | 0.12 | 0.00 |
+| SigLIP 2-So400m + probe | 0.45 | 0.70 | 0.50 | 0.62 | 0.45 |
 
 With the lab clock (**t0 known**), the blind no-video baseline scores 1.00 (airbag) and 0.94 (head contact).
 
-VLM crash reports (Qwen3.5-4B / Qwen3-VL-8B, zero-shot and LoRA): pending (GPU).
+VLM crash reports (Qwen3.5-4B / Qwen3-VL-8B, zero-shot and LoRA): see `reports/m4/results.md`.
 <!-- results:end -->
 
 ## Findings (honest version)

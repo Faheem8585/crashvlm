@@ -29,8 +29,9 @@ follow-up question.
   tests (median test error 0.9 ms), where visual labels and appearance-based probes failed.
 - **Implemented VLM crash reporting.** Qwen3.5-4B and Qwen3-VL-8B (4-bit) write structured JSON
   reports, with LoRA fine-tuning (PEFT), a hallucination probe and a FastAPI + Gradio service
-  with a Docker image. **[after GPU runs: add parse rate, test-type accuracy, fire
-  hallucination rate, LoRA vs zero-shot hit@16]**
+  with a Docker image. Zero-shot Qwen3.5-4B produced schema-valid reports for 100 % of test
+  clips with no fire hallucinations and timed airbag deployment within 16 ms in 75 % of cases
+  (blind baseline 35 %). **[after LoRA run: add LoRA vs zero-shot hit@16]**
 
 ## Research proposal paragraph (cover letter)
 

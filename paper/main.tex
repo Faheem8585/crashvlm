@@ -33,9 +33,11 @@ while zero-shot text prompting times events poorly. Grounding the video in the v
 own accelerometers, we derive the measured time of maximum crush for \NPhysics{} tests and show
 that clock-free optical flow on the vehicle body recovers it within 8\,ms in
 \FlowHeldOutWithinEight{} of \NFlowHeldOut{} held-out frontal tests, where visual labels and
-appearance probes fail. We further report LoRA-adapted video VLMs
-producing structured crash reports \pending{}, a hallucination analysis, and a label-quality
-protocol for model-produced annotations.
+appearance probes fail. A zero-shot video VLM (Qwen3.5-4B) writes schema-valid crash
+reports for every test clip and times airbag deployment best of all methods
+(\VlmAirbagUnknown{} hit@16), but it misplaces the impact itself and rarely identifies the test
+type. We also give a hallucination analysis and a label-quality protocol for model-produced
+annotations. LoRA results are pending.
 \end{abstract}
 
 \section{Introduction}
@@ -68,7 +70,7 @@ model-annotator protocol and cross-model agreement checks.
 \item Evidence that timing benchmarks on standardised crash tests are dominated by the clock,
 and a \emph{t0-unknown} protocol that removes it.
 \item Baselines from blind to probe to zero-shot VLM to LoRA-adapted VLM, with hallucination and
-efficiency analysis \pending{}.
+efficiency analysis (LoRA pending).
 \item Physics ground truth from NHTSA sensor data and a clock-free video-kinematics method
 validated against it.
 \end{itemize}
@@ -174,7 +176,8 @@ uninterpretable without this baseline.
 baseline for every event, most clearly for finding the impact itself (ResNet-50:
 \ResnetImpactUnknown{} vs.\ \BlindImpactUnknown{}). Most intervals overlap at
 \NTestTests{} test tests. Zero-shot prompting detects airbags but times them poorly and fails on
-glass. The larger SigLIP~2 encoder is \pending{}.
+glass. The larger SigLIP~2 encoder (so400m) improves the airbag probe slightly
+(\LargeProbeAirbagUnknown{}) but not impact timing, within the same wide intervals.
 
 \textbf{More labels barely help frozen probes (Tab.~\ref{tab:lc}).} From 25\,\% to 100\,\% of
 the training tests, hit@16 stays within seed noise except for side-glass breakage. The frozen
@@ -191,9 +194,16 @@ random start crops, helps airbag timing with ResNet-50 features but not other ev
 strongly between seeds (\texttt{reports/m3/temporal.md}). With 63 training tests, learned
 temporal models over-fit.
 
-\textbf{Structured VLM reports (Tab.~\ref{tab:vlm}).} \pending{} Zero-shot and LoRA-adapted
-Qwen reports, scored on the same test clips and crops: event timing (comparable to
-Tab.~\ref{tab:unknown}), test-type accuracy against NHTSA metadata, and hallucination rates.
+\textbf{Structured VLM reports (Tab.~\ref{tab:vlm}).} Qwen3.5-4B, zero-shot, sees 24 frames
+(8\,ms apart, timestamps relative to the first frame) of the same test crops as the probes.
+Every report parses against the schema (\VlmParse{}) and none claims fire or a fluid leak. For
+airbag onset it reaches \VlmAirbagUnknown{} hit@16, above the blind baseline
+(\BlindAirbagUnknown{}) and the best probe (\LargeProbeAirbagUnknown{}); its predicted times
+vary per clip rather than repeating a prior. Two weaknesses are clear. It places the impact too
+late (\VlmImpactUnknown{} hit@16, below the blind baseline), and it identifies the NCAP test
+type in only \VlmTestType{} of clips, which cabin views make genuinely hard. \VlmContradict{}
+of its event claims contradict the labels. At \VlmLatency{}\,s per clip on a free T4 GPU it is
+an offline tool, not a real-time one. LoRA-adapted results are \pending{}.
 
 \begin{table}[t]\centering\small
 \caption{VLM report quality on test clips. Fire hallucination: share of reports claiming fire or

@@ -142,6 +142,20 @@ def number_macros() -> None:
         "BlindImpactUnknown": f"{hit('t0 unknown', 'blind (no video)', 'impact_onset'):.2f}",
         "ResnetImpactUnknown": f"{hit('t0 unknown', 'resnet50 linear probe', 'impact_onset'):.2f}",
     }
+    big = "siglip2-so400m-patch14-384 linear probe"
+    if f"t0 unknown | {big}" in res:
+        m["LargeProbeAirbagUnknown"] = f"{hit('t0 unknown', big, 'airbag_deploy_start'):.2f}"
+    m4 = Path("reports/m4/results.json")
+    zs = json.loads(m4.read_text()).get("qwen3.5-4b_zs") if m4.exists() else None
+    if zs:
+        ev, sm = zs["events"], zs["summary"]
+        m["VlmAirbagUnknown"] = f"{ev['airbag_deploy_start']['hit@16']:.2f}"
+        m["VlmHeadUnknown"] = f"{ev['head_contact']['hit@16']:.2f}"
+        m["VlmImpactUnknown"] = f"{ev['impact_onset']['hit@16']:.2f}"
+        m["VlmParse"] = f"{sm['parse_rate']:.2f}"
+        m["VlmTestType"] = f"{sm['test_type_acc (NHTSA)']:.2f}"
+        m["VlmContradict"] = f"{sm['claims_contradicting_labels']:.2f}"
+        m["VlmLatency"] = f"{sm['latency_s_median']:.0f}"
     kin = pd.read_parquet(data / "physics" / "kinematics.parquet")
     m["NPhysics"] = int(kin.t_max_crush_ms.notna().sum())
     fl = {
