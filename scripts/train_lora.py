@@ -172,7 +172,7 @@ def main(cfg: DictConfig) -> None:
                 step += 1
                 log["steps"].append({"step": step, "loss": running, "lr": sched.get_last_lr()[0]})
                 if step % 10 == 0 or step == 1:
-                    print(f"epoch {epoch} step {step}/{total} loss {running:.4f}")
+                    print(f"epoch {epoch} step {step}/{total} loss {running:.4f}", flush=True)
                 running = 0.0
                 if s.max_steps > 0 and step >= s.max_steps:
                     done = True
@@ -184,7 +184,7 @@ def main(cfg: DictConfig) -> None:
                     break
         vl = val_loss()
         log["val"].append({"epoch": epoch, "step": step, "val_loss": vl})
-        print(f"epoch {epoch}: val loss {vl:.4f}")
+        print(f"epoch {epoch}: val loss {vl:.4f}", flush=True)
         if vl < best:
             best = vl
             model.save_pretrained(out / "adapter")
