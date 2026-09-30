@@ -1,6 +1,6 @@
 # M3 results (test split)
 
-Test tests: 23; labels: `annotations/claude_pass_a.json` (model-produced, see docs/ANNOTATION_QA.md). Tier-A events; hit@k counts a missed detection as a miss; CIs: bootstrap over tests. Backbones: google__siglip2-so400m-patch14-384, google__siglip2-base-patch16-224, resnet50.
+Test tests: 23; labels: `annotations/labels_v1.json` (model-assisted, see docs/ANNOTATION_QA.md). Tier-A events; hit@k counts a missed detection as a miss; CIs: bootstrap over tests. Backbones: google__siglip2-so400m-patch14-384, google__siglip2-base-patch16-224, resnet50.
 t0 unknown: each test clip cropped at a random start in [0, 40] ms (seed 42).
 
 ## t0 known

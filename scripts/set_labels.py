@@ -1,6 +1,6 @@
-"""Add or replace clip labels in an annotation JSON file (used for model-produced labels).
+"""Add or replace clip labels in an annotation JSON file (used for model-assisted labels).
 
-    uv run python scripts/set_labels.py annotations/claude_pass_a.json '{"<clip_id>": {...}}'
+    uv run python scripts/set_labels.py annotations/labels_v1.json '{"<clip_id>": {...}}'
 
 The label format is documented in crashvlm.annotation.direct. Entries are validated against
 the ontology before they are written.

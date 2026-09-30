@@ -1,6 +1,6 @@
-# Label agreement: opus_repeat_iaa
+# Label agreement: repeat_iaa
 
-A = `annotations/claude_pass_a.json`, B = `annotations/repeat_opus.json`; clips labelled by both: 30. Timing tolerance for adjudication: 16 ms.
+A = `annotations/labels_v1.json`, B = `annotations/check_repeat.json`; clips labelled by both: 30. Timing tolerance for adjudication: 16 ms.
 
 ## Point events
 

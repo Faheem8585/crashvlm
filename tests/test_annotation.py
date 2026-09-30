@@ -209,12 +209,12 @@ def test_records_from_direct_labels():
         }
     }
     (r,) = records_from_labels(
-        labels, {"300_exterior": m}, ONTO, "claude_a", "claude", {300: "VTB"}, 2
+        labels, {"300_exterior": m}, ONTO, "model_a", "model", {300: "VTB"}, 2
     )
     assert r["complete"] and r["summary"]["windshield_damage"] == "cracked"
     assert (
         r["events"]["impact_onset"]["t_ms"] == 0.0
-        and r["events"]["impact_onset"]["source"] == "claude"
+        and r["events"]["impact_onset"]["source"] == "model"
     )
     assert r["events"]["max_deformation"]["attributes"]["onset_visible"] is False
     assert r["events"]["max_deformation"]["t_ms"] in (64.0, 72.0)

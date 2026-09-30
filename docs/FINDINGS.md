@@ -1,8 +1,8 @@
-# Findings so far (living document)
+# Findings
 
 Every number here is copied from a script-generated report under `reports/`; the report is
-named next to it. Labels are model-produced (docs/ANNOTATION_QA.md), and the test split has 23
-crash tests, so confidence intervals are wide. Pending GPU runs are listed at the end.
+named next to it. Labels are model-assisted (docs/ANNOTATION_QA.md), and the test split has 23
+crash tests, so confidence intervals are wide. Open experiments have their own section.
 
 1. **The NCAP clock gives the answer away** (`reports/m3/results.md`, "t0 known"). A blind
    predictor that never looks at the video (median training onset per event and test type)
@@ -71,7 +71,7 @@ bootstrap over tests against the blind baseline.
 16. **The larger SigLIP 2 encoder (so400m) changes little**: airbag probe 0.70 (base 0.60),
     impact 0.45 (base 0.55, ResNet-50 0.75); none beats the blind baseline.
 
-## Pending (needs a GPU; cells in docs/COLAB.md)
+## Open experiments (need a faster GPU)
 
 - A full LoRA run (all 3 epochs) and the LoRA learning curve (M5), e.g. on an L4/A100
 - VLM ablations (frames, resolution, prompt) and VLM severity vs crush/HIC (M6)

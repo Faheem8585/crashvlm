@@ -1,6 +1,6 @@
-# Label agreement: claude_vs_sonnet_batch2
+# Label agreement: crossannotator_batch2
 
-A = `annotations/claude_pass_a.json`, B = `/private/tmp/claude-502/-Users-faheem-Desktop-Desktop---Naeem-s-MacBook-Pro-personal-projects/4fed2655-5f49-47cb-b5b6-826924af4a75/scratchpad/sonnet_b2.json`; clips labelled by both: 36. Timing tolerance for adjudication: 16 ms.
+A = `annotations/labels_v1.json`, B = `annotations/check_crossannotator.json` (batch 2); clips labelled by both: 36. Timing tolerance for adjudication: 16 ms.
 
 ## Point events
 

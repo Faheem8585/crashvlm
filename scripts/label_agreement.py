@@ -1,7 +1,7 @@
 """Agreement between two sets of directly written labels (e.g. two model annotators).
 
-    uv run python scripts/label_agreement.py annotations/claude_pass_a.json \
-        annotations/check_sonnet.json --name claude_vs_sonnet
+    uv run python scripts/label_agreement.py annotations/labels_v1.json \
+        annotations/check_crossannotator.json --name crossannotator
 
 Writes reports/annotation/<name>.md and <name>_disagreements.csv (clips to adjudicate: presence
 disagreements and timing differences above --tol ms). Only clips labelled in both files count.

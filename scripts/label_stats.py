@@ -1,6 +1,6 @@
 """Summary of an annotation file: events per type/role, timing spread, summary attributes.
 
-    uv run python scripts/label_stats.py annotations/claude_pass_a.json
+    uv run python scripts/label_stats.py annotations/labels_v1.json
 
 Writes reports/annotation/label_stats.md.
 """
@@ -26,7 +26,7 @@ recs = records_from_labels(
     metas,
     onto,
     "a",
-    "claude",
+    "model",
     dict(zip(sel.test_no, sel.config_key, strict=True)),
     onto.annotation["frame_stride"],
 )

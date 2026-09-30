@@ -168,7 +168,7 @@ def number_macros() -> None:
     sel = pd.read_parquet(data / "interim" / "selection.parquet")
     man = pd.read_parquet(data / "processed" / "manifest.parquet")
     res = json.loads(Path("reports/m3/results.json").read_text())
-    lab = json.loads(Path("annotations/claude_pass_a.json").read_text())
+    lab = json.loads(Path("annotations/labels_v1.json").read_text())
 
     def hit(setting, method, ev):
         return res[f"{setting} | {method}"][ev]["hit@16"]

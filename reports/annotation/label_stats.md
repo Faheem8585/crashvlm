@@ -1,4 +1,4 @@
-# Label statistics: `annotations/claude_pass_a.json`
+# Label statistics: `annotations/labels_v1.json`
 
 Clips: 200; complete: 200; view_usable: 195; warnings: 0
 

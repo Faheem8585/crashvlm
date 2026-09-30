@@ -48,8 +48,8 @@ Run **cell 1** (setup), then **cell 2** (smoke test).
 - Cell 2 must end with `smoke test OK`.
 
 Cell 2 trains 2 steps and writes 1 report. It shows that training, saving and loading the
-adapter work before you spend hours. If either cell fails, copy the last ~30 lines and send
-them to Claude.
+adapter work before you spend hours. If either cell fails, the last ~30 lines of its output
+name the problem; see *If something goes wrong* below.
 
 ## 5. The long run (background, up to ~11 h)
 
@@ -76,8 +76,8 @@ recorded in `train_log.json` (`stopped_by_time_budget`), and the paper reports i
 1. Open the finished version → **Output** tab.
 2. Download **`crashvlm_gpu_results.zip`**. It contains `vlm/*.jsonl`,
    `lora/qwen3.5-4b_lora/train_log.json` and the adapter.
-3. Put it in `~/Downloads` and tell Claude "Kaggle results are in". Claude then runs
-   `eval_vlm.py` and `paper_tables.py` and updates the paper.
+3. Unzip it into `~/crashvlm_data/`, then run `eval_vlm.py`, `paired_vs_blind.py` and
+   `paper_tables.py` to update the reports and the paper.
 
 ## If something goes wrong
 

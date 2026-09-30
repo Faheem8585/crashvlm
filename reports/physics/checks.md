@@ -34,9 +34,9 @@ Per test type: median |label - physics| and share within 16 ms, next to a blind 
 
 | labels               | config   |   n |   label median |err| ms |   label within 16 ms |   constant median |err| ms |   constant within 16 ms |
 |:---------------------|:---------|----:|------------------------:|---------------------:|---------------------------:|------------------------:|
-| primary (Claude)     | ITV      |  26 |                     8.7 |                 0.69 |                       12.7 |                    0.77 |
-| primary (Claude)     | VTB      |  37 |                     3.5 |                 1    |                        3.4 |                    0.97 |
-| primary (Claude)     | VTP      |  29 |                    22.4 |                 0.31 |                       16.3 |                    0.48 |
-| blind check (Sonnet) | ITV      |   8 |                    12.6 |                 0.62 |                       10.9 |                    0.75 |
-| blind check (Sonnet) | VTB      |  18 |                    23.1 |                 0.17 |                        4.9 |                    0.94 |
-| blind check (Sonnet) | VTP      |  10 |                     9.2 |                 0.6  |                       11   |                    0.6  |
+| primary annotator    | ITV      |  26 |                     8.7 |                 0.69 |                       12.7 |                    0.77 |
+| primary annotator    | VTB      |  37 |                     3.5 |                 1    |                        3.4 |                    0.97 |
+| primary annotator    | VTP      |  29 |                    22.4 |                 0.31 |                       16.3 |                    0.48 |
+| blind cross-check    | ITV      |   8 |                    12.6 |                 0.62 |                       10.9 |                    0.75 |
+| blind cross-check    | VTB      |  18 |                    23.1 |                 0.17 |                        4.9 |                    0.94 |
+| blind cross-check    | VTP      |  10 |                     9.2 |                 0.6  |                       11   |                    0.6  |

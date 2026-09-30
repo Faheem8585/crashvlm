@@ -1,6 +1,6 @@
-# Label agreement: claude_vs_sonnet_batch1
+# Label agreement: crossannotator_batch1
 
-A = `annotations/claude_pass_a.json`, B = `annotations/check_sonnet.json`; clips labelled by both: 39. Timing tolerance for adjudication: 16 ms.
+A = `annotations/labels_v1.json`, B = `annotations/check_crossannotator.json`; clips labelled by both: 39. Timing tolerance for adjudication: 16 ms.
 
 ## Point events
 

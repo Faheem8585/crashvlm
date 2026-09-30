@@ -1,6 +1,6 @@
 # Label agreement: selfcheck
 
-A = `annotations/claude_pass_a.json`, B = `annotations/claude_pass_a.json`; clips labelled by both: 40. Timing tolerance for adjudication: 16 ms.
+A = `annotations/labels_v1.json`, B = `annotations/labels_v1.json`; clips labelled by both: 40. Timing tolerance for adjudication: 16 ms.
 
 ## Point events
 

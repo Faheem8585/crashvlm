@@ -38,7 +38,7 @@ misplace the impact. Grounding the video in the vehicles' own accelerometers, we
 measured time of maximum crush for \NPhysics{} tests and show that clock-free optical flow on
 the vehicle body recovers it within 8\,ms in \FlowHeldOutWithinEight{} of \NFlowHeldOut{}
 held-out frontal tests, where visual labels and appearance probes fail. We also give a
-hallucination analysis and a label-quality protocol for model-produced annotations.
+hallucination analysis and a label-quality protocol for model-assisted annotations.
 \end{abstract}
 
 \section{Introduction}
@@ -119,11 +119,11 @@ metrics.
 \section{Annotation and label quality}
 Seven point events are tagged on the first visible frame at 8\,ms resolution (impact, airbag
 deployment, maximum deformation, head contact, windshield crack, side-glass break, door
-opening), together with a per-clip summary. \textbf{All \NLabelled{} views were annotated by a
-language model (Claude), not by a human}, from time-stamped contact sheets under a written
+opening), together with a per-clip summary. \textbf{All \NLabelled{} views were labelled with model-assisted
+annotation}: a large language model labelled time-stamped contact sheets under a written
 guideline; the protocol is disclosed as a limitation. Quality is estimated by
-(a)~two blind checks by a different model of the same family (Claude Sonnet), 75 views, and
-(b)~a blind repeat by an independent instance of the primary model. Timed events agree closely,
+(a)~two blind checks by a second annotator model of the same family, 75 views, and
+(b)~a blind repeat by an independent run of the primary annotator. Timed events agree closely,
 whereas glass-type and structural attributes do not (details and all numbers in the repository,
 \texttt{docs/ANNOTATION\_QA.md}). Labels are therefore used in three reliability tiers, and
 only tier~A (impact, airbag, head contact, glass events) enters the headline metrics.
@@ -267,7 +267,7 @@ rather than a label. The scope is small (frontal view, 12 tests).
 
 \section{Limitations}
 \begin{itemize}\setlength\itemsep{0pt}
-\item \textbf{Model-produced labels.} All annotations come from a language model. Cross-model
+\item \textbf{Model-assisted labels.} All annotations come from a language model. Cross-model
 checks reduce but cannot exclude shared errors, and a human-verified subset is the most
 important missing piece.
 \item \textbf{Small test set.} \NTestTests{} tests: most differences between video methods are

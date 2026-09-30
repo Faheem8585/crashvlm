@@ -6,7 +6,7 @@ Per test: download the ISO-MME export, integrate structural accelerations
 (crashvlm.data.sensors), and delete the archive (only derived values are kept).
 Writes <data>/physics/kinematics.parquet and reports/physics/{kinematics.csv, checks.md}:
 - dynamic vs residual (NHTSA) crush per test type: a physical sanity check,
-- the visual max_deformation labels (primary annotator and the blind Sonnet check) against the
+- the visual max_deformation labels (primary annotator and blind cross-check) against the
   measured time of maximum crush.
 """
 
@@ -106,8 +106,8 @@ def main(cfg: DictConfig) -> None:
     )
     rows = []
     for name, path in [
-        ("primary (Claude)", Path("annotations/claude_pass_a.json")),
-        ("blind check (Sonnet)", Path("annotations/check_sonnet.json")),
+        ("primary annotator", Path("annotations/labels_v1.json")),
+        ("blind cross-check", Path("annotations/check_crossannotator.json")),
     ]:
         lab = label_times(path)
         d = ok[ok.test_no.isin(lab)].copy()

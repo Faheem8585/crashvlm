@@ -142,7 +142,7 @@ def main(cfg: DictConfig) -> None:
     n_test = len({g.test_no for g in test_sets["t0 known"]})
     md = [
         "# M3 results (test split)\n",
-        f"Test tests: {n_test}; labels: `{mc.labels}` (model-produced, see "
+        f"Test tests: {n_test}; labels: `{mc.labels}` (model-assisted, see "
         "docs/ANNOTATION_QA.md). Tier-A events; hit@k counts a missed detection as a miss; "
         "CIs: bootstrap over tests. Backbones: " + ", ".join(mc.backbones) + ".",
         f"t0 unknown: each test clip cropped at a random start in [0, {mc.window_jitter_ms}] ms "

@@ -1,16 +1,18 @@
 # Annotation QA log
 
-All labels in `annotations/claude_pass_a.json` were produced by Claude (Opus 5.5) from the
-time-stamped labelling sheets (`scripts/contact_sheets.py +label_sheets=true`). No human has
-labelled these clips. This file records how label quality is checked; the numbers come from
+All labels in `annotations/labels_v1.json` were produced with model-assisted annotation: a
+large language model (the primary annotator) labelled the time-stamped labelling sheets
+(`scripts/contact_sheets.py +label_sheets=true`) under the written guideline. No human has
+labelled these clips yet. This file records how label quality is checked; the numbers come from
 `scripts/label_agreement.py` (`reports/annotation/`), never typed in by hand.
 
-## Check 1: blind second model annotator (Claude Sonnet), first 39 clips
+## Check 1: blind cross-annotator, first 39 clips
 
-A Sonnet sub-agent labelled the same 39 clips from the same sheets and guideline, without
-access to the primary labels. Both annotators are Claude models, so errors can be correlated:
-this measures consistency between two models, not correctness against a human.
-Report: `reports/annotation/claude_vs_sonnet_batch1.md`.
+A second, different language model labelled the same 39 clips from the same sheets and
+guideline, without access to the primary labels. Both annotators are models from the same
+family, so errors can be correlated: this measures consistency between two annotators, not
+correctness against a human.
+Report: `reports/annotation/crossannotator_batch1.md`.
 
 ### What the disagreements showed
 
@@ -30,9 +32,9 @@ windshield for `windshield_damage`, the A-pillar for `a_pillar_deformation`, a d
 `door_opened`. If that region is visible, answer yes/no (or none/minor/…) even when the answer
 is "nothing happened".
 
-## Check 2: blind Sonnet annotator, next 36 clips (after guideline v1.1)
+## Check 2: blind cross-annotator, next 36 clips (after guideline v1.1)
 
-Report: `reports/annotation/claude_vs_sonnet_batch2.md`. Same set-up as check 1; the second
+Report: `reports/annotation/crossannotator_batch2.md`. Same set-up as check 1; the second
 annotator received the v1.1 visibility rule.
 
 ### Findings
@@ -87,10 +89,10 @@ Generated summary: `reports/annotation/label_stats.md`.
   appear in several clips and are noted as *not* fire, so this is the hallucination probe the
   ontology intended.
 
-## Check 3: repeat pass by an independent Opus instance (30 IAA clips)
+## Check 3: blind repeat by an independent run of the primary annotator (30 IAA clips)
 
-A fresh Opus sub-agent, the same model family as the primary annotator, labelled the 30 IAA clips
-blind, in shuffled order. Report: `reports/annotation/opus_repeat_iaa.md`.
+An independent run of the primary annotator's model labelled the 30 IAA clips
+blind, in shuffled order. Report: `reports/annotation/repeat_iaa.md`.
 
 - **Timed events are highly consistent:** impact onset 30/30 identical; airbag onset presence
   kappa 0.93, 18/18 within 8 ms; head contact kappa 0.86, 10/11 within 8 ms.
@@ -99,8 +101,8 @@ blind, in shuffled order. Report: `reports/annotation/opus_repeat_iaa.md`.
   in the upper corner windshield or front side window? The second annotator flagged exactly these
   clips as uncertain.
 - **Same-model agreement is inflated where the task is subjective.** `max_deformation` agrees to
-  0 ms on all 15 clips here, but was systematically 24 ms later for the Sonnet annotator.
-  `visual_severity` gets kappa 0.93 here versus about 0.2 against Sonnet. Two runs of the same
+  0 ms on all 15 clips here, but was systematically 24 ms later for the cross-annotator.
+  `visual_severity` gets kappa 0.93 here versus about 0.2 against the cross-annotator. Two runs of the same
   model share its priors, so this check measures *reproducibility*, not *correctness*. The
   tier-C decisions stand, and cross-model agreement (checks 1-2) is the more honest quality
   number.

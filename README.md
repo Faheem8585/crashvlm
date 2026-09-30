@@ -3,8 +3,8 @@
 **Can open vision-language models read a crash test video, and how much of what they "see"
 is just the clock?**
 
-CrashVLM is a research prototype for evaluating vehicle crash test videos with vision-language
-models. It is built on the public NHTSA NCAP database: 100 frontal, side-barrier and side-pole
+CrashVLM is a personal research project on evaluating vehicle crash test videos with
+vision-language models. It is built on the public NHTSA NCAP database: 100 frontal, side-barrier and side-pole
 tests, with two high-speed camera views each. It contains:
 - an open data pipeline, including overlay removal with an automated leak check and OCR time
   recovery;
@@ -12,12 +12,14 @@ tests, with two high-speed camera views each. It contains:
 - a leakage-aware evaluation protocol;
 - baselines from a blind no-video predictor through SigLIP 2 probes to Qwen VLMs that write
   structured JSON crash reports;
-- a FastAPI service, a Gradio demo and a workshop-paper draft.
+- physics ground truth from the vehicles' accelerometers, and a clock-free optical-flow method
+  validated against it;
+- a FastAPI service, a Gradio demo and a 5-page paper draft.
 
-> **Status.** Data, annotation, CPU baselines, API/demo and paper draft are done. The GPU runs
-> (SigLIP 2 so400m, Qwen zero-shot, LoRA) are fully scripted and smoke-tested, and waiting for a
-> Colab session ([docs/COLAB.md](docs/COLAB.md)). Results below are generated from `reports/`
-> by `scripts/paper_tables.py`; nothing is typed in by hand.
+> **Status.** All planned experiments have run: CPU baselines locally, SigLIP 2 so400m and
+> Qwen3.5-4B zero-shot on Colab (T4), LoRA and Qwen3-VL-8B on Kaggle (2 x T4). The LoRA run
+> was cut short by the free-GPU time limit (20 of 183 steps). Results below are generated
+> from `reports/` by `scripts/paper_tables.py`; nothing is typed in by hand.
 
 ```mermaid
 flowchart LR
@@ -35,8 +37,8 @@ flowchart LR
   I --> J[Paper + API + demo]
 ```
 
-> **Demo GIF: placeholder.** To be recorded from the Gradio app (`python -m crashvlm.serve.demo`).
-> NHTSA frames are not redistributed in this repository.
+> **Demo.** Run the Gradio app locally (`python -m crashvlm.serve.demo`, see Quick start). No
+> recording is included because NHTSA frames are not redistributed in this repository.
 
 ## Results
 
@@ -69,7 +71,7 @@ With the lab clock (**t0 known**), the blind no-video baseline scores 1.00 (airb
 Report quality, hallucination and latency: `reports/m4/results.md`; intervals: `reports/m4/paired.md`.
 <!-- results:end -->
 
-## Findings (honest version)
+## Findings
 
 1. **The clock gives the answer away.** NCAP tests are so standardised that a predictor which
    never looks at the video times airbag deployment within 16 ms in almost every test case, once
@@ -94,19 +96,29 @@ Report quality, hallucination and latency: `reports/m4/results.md`; intervals: `
    find it. Optical flow on the car body does: within 8 ms in all 12 held-out frontal tests,
    without using the lab clock ([reports/physics](reports/physics)).
 6. **Data work beat model work.** Burned-in timestamps and a red→green impact lamp would have
-   leaked the labels. Two OCR time-parsing bugs shifted 8 clips by about 50 ms. Same-model label
+   leaked the labels; an automated leak check caught the lamp in 8 clips the first filter
+   missed. Two OCR time-parsing bugs shifted 8 clips by about 50 ms. Same-source label
    agreement overstated reliability. Each was caught by an explicit check.
 
 Details: [docs/FINDINGS.md](docs/FINDINGS.md) · label quality:
 [docs/ANNOTATION_QA.md](docs/ANNOTATION_QA.md) · paper draft:
 [paper/crashvlm_draft.pdf](paper/crashvlm_draft.pdf)
 
-## Important limitation: who labelled the data
+## Limitations
 
-All 200 views were annotated by a language model (Claude), not by a human, from time-stamped
-contact sheets under a written guideline. Quality was checked with blind re-annotation by
-other model instances, and labels are used in reliability tiers. A human-verified subset is
-the most important missing piece. See [docs/ANNOTATION_QA.md](docs/ANNOTATION_QA.md).
+- **Model-assisted labels.** All 200 views were labelled with model-assisted annotation: a
+  large language model labelled time-stamped contact sheets under my written guideline.
+  Quality was measured with blind re-annotation (a second annotator model and an independent
+  repeat), and labels are used in reliability tiers. A human-verified subset is the most
+  important missing piece ([docs/ANNOTATION_QA.md](docs/ANNOTATION_QA.md)).
+- **Small test set.** 23 test tests, so most differences between video methods sit inside
+  overlapping confidence intervals.
+- **Under-trained adapter.** LoRA ran 20 of 183 planned optimiser steps (160 of 488 training
+  examples) within the free-GPU time limit.
+- **Narrow domain.** US NCAP only: fixed protocols, few laboratories.
+- **8 ms resolution.** No claims below 8 ms.
+- **Partial physics grounding.** Sensor targets for one event (maximum crush); optical flow
+  validated on frontal views only.
 
 ## Quick start
 
@@ -137,7 +149,15 @@ uv run uvicorn crashvlm.serve.api:app --port 8000   # POST /evaluate_video
 uv run python -m crashvlm.serve.demo                # Gradio UI
 ```
 
-GPU steps (SigLIP 2 so400m, Qwen zero-shot, LoRA): [docs/COLAB.md](docs/COLAB.md).
+GPU steps: [docs/COLAB.md](docs/COLAB.md) (embeddings, zero-shot VLMs) and
+[docs/KAGGLE.md](docs/KAGGLE.md) (LoRA training and Qwen3-VL-8B, about 11 h on free 2 x T4).
+Then, on CPU:
+
+```bash
+uv run python scripts/eval_vlm.py            # report quality + event metrics per VLM run
+uv run python scripts/paired_vs_blind.py     # paired comparison with the blind baseline
+uv run python scripts/paper_tables.py        # paper tables, numbers and this README block
+```
 
 ## Repository
 
@@ -150,8 +170,11 @@ GPU steps (SigLIP 2 so400m, Qwen zero-shot, LoRA): [docs/COLAB.md](docs/COLAB.md
 | `src/crashvlm/eval` | event metrics, bootstrap CIs, blind baseline, shared probe selection |
 | `src/crashvlm/serve` | inference pipeline, FastAPI, Gradio |
 | `configs/` | Hydra configs per milestone; `configs/splits/selection_v1.csv` is the frozen split |
-| `annotations/` | labels and QA passes (model-produced) |
-| `docs/` | data card, design decisions, annotation guideline and QA, findings, Colab cells |
+| `annotations/` | labels (`labels_v1.json`) and blind QA passes |
+| `scripts/` | one entry point per pipeline step (data, annotation, training, evaluation, paper) |
+| `tests/` | 78 unit tests (pytest), run in CI with ruff |
+| `docs/` | data card, design decisions, annotation guideline and QA, findings, Colab and Kaggle guides |
+| `notebooks/` | Colab and Kaggle notebooks for the GPU steps |
 | `paper/` | LaTeX draft, generated tables, verified bibliography |
 
 ## Data and licence
@@ -159,3 +182,7 @@ GPU steps (SigLIP 2 so400m, Qwen zero-shot, LoRA): [docs/COLAB.md](docs/COLAB.md
 NHTSA footage is publicly accessible but its licence is listed as "unknown" on data.gov, and it
 is produced by contract laboratories. This repository therefore contains no video or frames,
 only code, test IDs, annotations and derived metrics. See [docs/DATA_CARD.md](docs/DATA_CARD.md).
+
+## Author
+
+Muhammad Faheem Arshad

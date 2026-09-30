@@ -8,7 +8,7 @@ embed:
   batch_size: 32
 
 m3:
-  labels: annotations/claude_pass_a.json
+  labels: annotations/labels_v1.json
   backbones: [google__siglip2-so400m-patch14-384, google__siglip2-base-patch16-224, resnet50]   # feature files to evaluate
   # Tier-A events only (docs/ANNOTATION_QA.md). impact_onset is excluded: its label is the
   # lab-measured t0 itself, so any model is scored against the axis it was defined on.
