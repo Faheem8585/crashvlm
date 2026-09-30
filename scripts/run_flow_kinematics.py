@@ -53,9 +53,24 @@ def main(cfg: DictConfig) -> None:
         ]
         return t[keep], ims
 
-    # blind constant: median training physics time relative to the clip start
+    # blind constant: median training physics time relative to the first frame shown. When the
+    # evaluation clips are cropped, the training clips get the same kind of random crop.
     starts = {int(t): clip(t)[0][0] for t in train.test_no}
-    rel = float(np.median([r.t_max_crush_ms - starts[int(r.test_no)] for r in train.itertuples()]))
+    train_crop = (
+        window_crops([f"{t}_exterior" for t in train.test_no], cfg.m3.window_jitter_ms, cfg.m3.seed)
+        if crop
+        else {}
+    )
+    rel = float(
+        np.median(
+            [
+                r.t_max_crush_ms
+                - starts[int(r.test_no)]
+                - train_crop.get(f"{r.test_no}_exterior", 0)
+                for r in train.itertuples()
+            ]
+        )
+    )
 
     def flow_time(test_no):
         t, ims = clip(int(test_no))

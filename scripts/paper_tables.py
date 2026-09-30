@@ -111,7 +111,52 @@ def main() -> None:
         rows.append(run.replace("_", r"\_") + " & " + " & ".join(cell(s, k) for k in keys) + r" \\")
     rows += [r"\bottomrule", r"\end{tabular}"]
     (OUT / "m4_reports.tex").write_text("\n".join(rows) + "\n")
+
+    paired = Path("reports/m4/paired.json")
+    if paired.exists():
+        (OUT / "m4_paired.tex").write_text(paired_table(json.loads(paired.read_text())))
     print(f"tables -> {OUT}")
+
+
+PAIRED_METHODS = [
+    ("resnet50 linear probe", "ResNet-50 probe"),
+    ("siglip2-so400m-patch14-384 linear probe", "SigLIP 2-So400m probe"),
+    ("qwen3.5-4b_zs", "Qwen3.5-4B"),
+    ("qwen3-vl-8b-4bit_zs", "Qwen3-VL-8B"),
+    ("qwen3.5-4b_lora", "Qwen3.5-4B LoRA"),
+]
+
+
+def paired_table(rows: list[dict]) -> str:
+    """hit@8 and hit@16 of the blind baseline and every video method on the same clips;
+    arrows mark paired differences whose bootstrap interval excludes zero."""
+    idx = {(r["event"], r["tol_ms"], r["method"]): r for r in rows}
+    lines = [
+        r"\begin{tabular}{ll" + "c" * (1 + len(PAIRED_METHODS)) + "}",
+        r"\toprule",
+        "Event & $k$ & Blind & " + " & ".join(n for _, n in PAIRED_METHODS) + r" \\",
+        r"\midrule",
+    ]
+    for ev in ["impact_onset", "airbag_deploy_start", "head_contact"]:
+        for tol in (8, 16):
+            blind = next((r for (e, t, _), r in idx.items() if e == ev and t == tol), None)
+            if blind is None:
+                continue
+            vals = []
+            for key, _ in PAIRED_METHODS:
+                r = idx.get((ev, tol, key))
+                if r is None:
+                    vals.append(r"\pending")
+                    continue
+                mark = ""
+                if r["CI excludes 0"]:
+                    mark = r"$^{\uparrow}$" if r["diff"] > 0 else r"$^{\downarrow}$"
+                vals.append(f"{r['method_hit']:.2f}{mark}")
+            lines.append(
+                f"{EV[ev]} & {tol} & {blind['blind_hit']:.2f} & " + " & ".join(vals) + r" \\"
+            )
+    lines += [r"\bottomrule", r"\end{tabular}"]
+    return "\n".join(lines) + "\n"
 
 
 def number_macros() -> None:
@@ -156,6 +201,42 @@ def number_macros() -> None:
         m["VlmTestType"] = f"{sm['test_type_acc (NHTSA)']:.2f}"
         m["VlmContradict"] = f"{sm['claims_contradicting_labels']:.2f}"
         m["VlmLatency"] = f"{sm['latency_s_median']:.0f}"
+    pj = Path("reports/m4/paired.json")
+    if pj.exists():
+        pr = {(r["event"], r["tol_ms"], r["method"]): r for r in json.loads(pj.read_text())}
+        for tag, ev in (
+            ("Impact", "impact_onset"),
+            ("Airbag", "airbag_deploy_start"),
+            ("Head", "head_contact"),
+        ):
+            for tol, word in ((8, "Eight"), (16, "Sixteen")):
+                any_row = next((r for (e, t, _), r in pr.items() if e == ev and t == tol), None)
+                if any_row:
+                    m[f"Blind{tag}{word}"] = f"{any_row['blind_hit']:.2f}"
+                for run, name in (
+                    ("qwen3.5-4b_zs", "Zs"),
+                    ("qwen3-vl-8b-4bit_zs", "Vl"),
+                    ("qwen3.5-4b_lora", "Lora"),
+                ):
+                    r = pr.get((ev, tol, run))
+                    if r:
+                        m[f"{name}{tag}{word}"] = f"{r['method_hit']:.2f}"
+                        m[f"{name}{tag}{word}Diff"] = f"{r['diff']:+.2f}"
+    tl = data / "lora" / "qwen3.5-4b_lora" / "train_log.json"
+    if tl.exists():
+        log = json.loads(tl.read_text())
+        m["LoraSteps"] = len(log["steps"])
+        c = log["config"]["sft"]
+        n_train = sum(1 for _ in (data / "sft" / c["train_file"]).open())
+        m["LoraPlannedSteps"] = -(-n_train // c["grad_accum"]) * c["epochs"]
+        m["LoraTrainHours"] = f"{log['train_minutes'] / 60:.1f}"
+    if m4.exists():
+        for run, name in (("qwen3-vl-8b-4bit_zs", "Vl"), ("qwen3.5-4b_lora", "Lora")):
+            sm = json.loads(m4.read_text()).get(run, {}).get("summary")
+            if sm:
+                m[f"{name}TestType"] = f"{sm['test_type_acc (NHTSA)']:.2f}"
+                m[f"{name}Contradict"] = f"{sm['claims_contradicting_labels']:.2f}"
+                m[f"{name}Fire"] = f"{sm['fire_hallucination_rate']:.2f}"
     kin = pd.read_parquet(data / "physics" / "kinematics.parquet")
     m["NPhysics"] = int(kin.t_max_crush_ms.notna().sum())
     fl = {
@@ -207,11 +288,35 @@ def readme_results() -> None:
         f"{blind_known['airbag_deploy_start']['hit@16']:.2f} (airbag) and "
         f"{blind_known['head_contact']['hit@16']:.2f} (head contact).\n"
     )
-    m4 = Path("reports/m4/results.json")
-    lines.append(
-        "VLM crash reports (Qwen3.5-4B / Qwen3-VL-8B, zero-shot and LoRA): "
-        + ("see `reports/m4/results.md`." if m4.exists() else "pending (GPU).")
-    )
+    paired = Path("reports/m4/paired.json")
+    if paired.exists():
+        idx = {(r["event"], r["tol_ms"], r["method"]): r for r in json.loads(paired.read_text())}
+        lines += [
+            "**Video VLMs vs. the blind baseline** (same clips, t0 unknown; ↑/↓ = paired "
+            "bootstrap interval excludes zero):\n",
+            "| Event | k (ms) | Blind | " + " | ".join(n for _, n in PAIRED_METHODS) + " |",
+            "|---|---|---|" + "---|" * len(PAIRED_METHODS),
+        ]
+        for ev in ["impact_onset", "airbag_deploy_start", "head_contact"]:
+            for tol in (8, 16):
+                rs = [idx.get((ev, tol, k)) for k, _ in PAIRED_METHODS]
+                base = next((r for r in rs if r), None)
+                if base is None:
+                    continue
+                cells = []
+                for r in rs:
+                    if r is None:
+                        cells.append("–")
+                        continue
+                    arrow = ("↑" if r["diff"] > 0 else "↓") if r["CI excludes 0"] else ""
+                    cells.append(f"{r['method_hit']:.2f}{arrow}")
+                lines.append(
+                    f"| {EV[ev]} | {tol} | {base['blind_hit']:.2f} | " + " | ".join(cells) + " |"
+                )
+        lines.append(
+            "\nReport quality, hallucination and latency: `reports/m4/results.md`; "
+            "intervals: `reports/m4/paired.md`."
+        )
     block = "\n".join(lines)
     readme = Path("README.md").read_text()
     a, b = "<!-- results:start -->", "<!-- results:end -->"

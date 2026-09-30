@@ -116,5 +116,241 @@
    "latency_s_median": 104.4945302645001,
    "peak_vram_gb_max": 11.467509746551514
   }
+ },
+ "qwen3-vl-8b-4bit_zs": {
+  "events": {
+   "airbag_deploy_start": {
+    "n": 22,
+    "n_pos": 21,
+    "precision": 1.0,
+    "recall": 0.9523809523809523,
+    "f1": 0.975609756097561,
+    "n_timing": 20,
+    "median_abs_err_ms": 1.7763568394002505e-15,
+    "hit@8": 0.9,
+    "hit@16": 0.9,
+    "hit@32": 0.95,
+    "f1_ci": [
+     0.9189189189189189,
+     1.0
+    ],
+    "hit@16_ci": [
+     0.75,
+     1.0
+    ]
+   },
+   "head_contact": {
+    "n": 22,
+    "n_pos": 18,
+    "precision": 0.8571428571428571,
+    "recall": 0.3333333333333333,
+    "f1": 0.48,
+    "n_timing": 18,
+    "median_abs_err_ms": 20.0,
+    "hit@8": 0.1111111111111111,
+    "hit@16": 0.16666666666666666,
+    "hit@32": 0.2777777777777778,
+    "f1_ci": [
+     0.21052631578947367,
+     0.6897214854111405
+    ],
+    "hit@16_ci": [
+     0.0,
+     0.35714285714285715
+    ]
+   },
+   "impact_onset": {
+    "n": 23,
+    "n_pos": 23,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "n_timing": 20,
+    "median_abs_err_ms": 24.0,
+    "hit@8": 0.2,
+    "hit@16": 0.4,
+    "hit@32": 0.85,
+    "f1_ci": [
+     1.0,
+     1.0
+    ],
+    "hit@16_ci": [
+     0.19047619047619047,
+     0.6190476190476191
+    ]
+   },
+   "side_glass_break_onset": {
+    "n": 27,
+    "n_pos": 11,
+    "precision": 1.0,
+    "recall": 0.09090909090909091,
+    "f1": 0.16666666666666669,
+    "n_timing": 11,
+    "median_abs_err_ms": 8.0,
+    "hit@8": 0.09090909090909091,
+    "hit@16": 0.09090909090909091,
+    "hit@32": 0.09090909090909091,
+    "f1_ci": [
+     0.0,
+     0.5
+    ],
+    "hit@16_ci": [
+     0.0,
+     0.3333333333333333
+    ]
+   },
+   "windshield_crack_onset": {
+    "n": 45,
+    "n_pos": 8,
+    "precision": 0.25806451612903225,
+    "recall": 1.0,
+    "f1": 0.41025641025641024,
+    "n_timing": 8,
+    "median_abs_err_ms": 0.0,
+    "hit@8": 0.875,
+    "hit@16": 0.875,
+    "hit@32": 0.875,
+    "f1_ci": [
+     0.11764705882352941,
+     0.6486486486486487
+    ],
+    "hit@16_ci": [
+     0.5,
+     1.0
+    ]
+   }
+  },
+  "summary": {
+   "clips": 46,
+   "parse_rate": 1.0,
+   "schema_issues_per_clip": 0.0,
+   "test_type_acc (NHTSA)": 0.4782608695652174,
+   "frontal_airbag_deployed_acc": 0.717391304347826,
+   "curtain_airbag_deployed_acc": 0.391304347826087,
+   "fire_hallucination_rate": 0.06521739130434782,
+   "event_claims": 100,
+   "claims_contradicting_labels": 0.25,
+   "claims_impossible_for_view": 0.06,
+   "latency_s_median": 141.27440568550082,
+   "peak_vram_gb_max": 6.676084518432617
+  }
+ },
+ "qwen3.5-4b_lora": {
+  "events": {
+   "airbag_deploy_start": {
+    "n": 22,
+    "n_pos": 21,
+    "precision": 0.9545454545454546,
+    "recall": 1.0,
+    "f1": 0.9767441860465117,
+    "n_timing": 20,
+    "median_abs_err_ms": 8.0,
+    "hit@8": 0.8,
+    "hit@16": 0.9,
+    "hit@32": 0.9,
+    "f1_ci": [
+     0.9268292682926829,
+     1.0
+    ],
+    "hit@16_ci": [
+     0.7619047619047619,
+     1.0
+    ]
+   },
+   "head_contact": {
+    "n": 22,
+    "n_pos": 18,
+    "precision": 0.8181818181818182,
+    "recall": 1.0,
+    "f1": 0.9,
+    "n_timing": 18,
+    "median_abs_err_ms": 8.0,
+    "hit@8": 0.5555555555555556,
+    "hit@16": 0.8333333333333334,
+    "hit@32": 0.9444444444444444,
+    "f1_ci": [
+     0.7777777777777778,
+     0.9767441860465117
+    ],
+    "hit@16_ci": [
+     0.631578947368421,
+     1.0
+    ]
+   },
+   "impact_onset": {
+    "n": 23,
+    "n_pos": 23,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "n_timing": 20,
+    "median_abs_err_ms": 8.0,
+    "hit@8": 0.65,
+    "hit@16": 0.9,
+    "hit@32": 1.0,
+    "f1_ci": [
+     1.0,
+     1.0
+    ],
+    "hit@16_ci": [
+     0.75,
+     1.0
+    ]
+   },
+   "side_glass_break_onset": {
+    "n": 27,
+    "n_pos": 11,
+    "precision": 0.8571428571428571,
+    "recall": 0.5454545454545454,
+    "f1": 0.6666666666666665,
+    "n_timing": 11,
+    "median_abs_err_ms": 12.0,
+    "hit@8": 0.2727272727272727,
+    "hit@16": 0.36363636363636365,
+    "hit@32": 0.5454545454545454,
+    "f1_ci": [
+     0.375,
+     0.8571428571428571
+    ],
+    "hit@16_ci": [
+     0.0,
+     0.6671874999999995
+    ]
+   },
+   "windshield_crack_onset": {
+    "n": 45,
+    "n_pos": 8,
+    "precision": 0.6666666666666666,
+    "recall": 0.75,
+    "f1": 0.7058823529411765,
+    "n_timing": 8,
+    "median_abs_err_ms": 0.0,
+    "hit@8": 0.75,
+    "hit@16": 0.75,
+    "hit@32": 0.75,
+    "f1_ci": [
+     0.28571428571428575,
+     0.9
+    ],
+    "hit@16_ci": [
+     0.5,
+     1.0
+    ]
+   }
+  },
+  "summary": {
+   "clips": 46,
+   "parse_rate": 1.0,
+   "schema_issues_per_clip": 0.0,
+   "test_type_acc (NHTSA)": 0.45652173913043476,
+   "frontal_airbag_deployed_acc": 0.5869565217391305,
+   "curtain_airbag_deployed_acc": 0.6956521739130435,
+   "fire_hallucination_rate": 0.0,
+   "event_claims": 117,
+   "claims_contradicting_labels": 0.08547008547008547,
+   "claims_impossible_for_view": 0.0,
+   "latency_s_median": 104.7200065349989,
+   "peak_vram_gb_max": 6.985949516296387
+  }
  }
 }

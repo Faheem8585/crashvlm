@@ -97,7 +97,9 @@ def main(cfg: DictConfig) -> None:
             methods[f"{name} zero-shot"] = (curves, tune_thr(curves, sp["val"], events, mc, tols))
         methods[f"{name} linear probe"] = fit_probes(clips, events, sp, all_gts, mc, tols)
 
-    blind = Blind(sp["train"], clip_start)
+    # the blind prior sees the same kind of random start crops as the test clips
+    train_crop = window_crops([g.clip_id for g in sp["train"]], mc.window_jitter_ms, mc.seed)
+    blind = Blind(sp["train"], clip_start, train_crop)
     results, preds_out, rows = {}, {}, []
     for setting, test in test_sets.items():
         c = crop if setting == "t0 unknown" else None

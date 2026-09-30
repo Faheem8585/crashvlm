@@ -51,7 +51,9 @@ def main(cfg: DictConfig) -> None:
     sp = {s: [g for g in gts if split[g.test_no] == s] for s in ("train", "val", "test")}
     crop = window_crops([g.clip_id for g in sp["test"]], mc.window_jitter_ms, mc.seed)
 
-    blind = Blind(sp["train"], clip_start)
+    # the blind prior sees the same kind of random start crops as the test clips
+    train_crop = window_crops([g.clip_id for g in sp["train"]], mc.window_jitter_ms, mc.seed)
+    blind = Blind(sp["train"], clip_start, train_crop)
     rows = []
     for setting, c in (("t0 known", None), ("t0 unknown", crop)):
         preds = {"blind (no video)": blind.predict(sp["test"], clip_start, c)}

@@ -16,5 +16,5 @@ vlm:
   limit: null                # first N clips (smoke runs)
 
 m4:
-  runs: [qwen3.5-4b_zs, qwen3-vl-8b-4bit_zs]
+  runs: [qwen3.5-4b_zs, qwen3-vl-8b-4bit_zs, qwen3.5-4b_lora]
   out: reports/m4

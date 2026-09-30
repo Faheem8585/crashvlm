@@ -9,10 +9,19 @@ crash tests, so confidence intervals are wide. Pending GPU runs are listed at th
    gets airbag onset 100 % and head contact 94 % within 16 ms, beating every video model.
    Crash-video timing benchmarks built on standardised tests are only meaningful against such
    a baseline, or without the lab clock.
-2. **Without the clock, video features beat the blind baseline** (`reports/m3/results.md`,
-   "t0 unknown": random clip start crops). Hit@16 for the blind baseline vs. the best linear
-   probe: impact 0.45 vs 0.75 (ResNet-50), airbag 0.35 vs 0.60, head contact 0.33 vs 0.50,
-   windshield crack 0.50 vs 0.62 (SigLIP 2 base). Intervals overlap for most events.
+2. **Without the clock, the prior is still strong, and frozen features don't beat it**
+   (`reports/m3/results.md`, "t0 unknown": random clip start crops). The blind baseline, trained
+   on the same kind of random crops, reaches hit@16 0.75 (impact), 0.75 (airbag), 0.67 (head
+   contact), 0.75 (windshield), 0.45 (side glass). The best linear probes tie or fall below it
+   (impact 0.75 ResNet-50; airbag 0.70 SigLIP 2 so400m).
+
+   **Correction (2026-09-30).** An earlier version of this finding claimed that probes beat
+   the blind baseline (e.g. airbag 0.60 vs 0.35). That baseline measured its prior from the
+   *uncropped* clip start and applied it to cropped clips, so it was late by the mean crop
+   (about 20 ms, visible as its 18-20 ms median error). The fine-tuned VLM, trained on cropped
+   clips, exposed it by beating the baseline with near-constant predictions. `Blind` now takes
+   the training crops (`src/crashvlm/eval/baselines.py`); the physics probe and optical-flow
+   comparisons were rerun with the same fix.
 3. **Zero-shot SigLIP is weak at timing.** Text-prompt curves detect airbags (F1 0.92) but
    place onsets poorly (hit@16 0.45, and 0 for side-glass breakage); a linear probe on the same
    features is consistently better.
@@ -36,23 +45,35 @@ crash tests, so confidence intervals are wide. Pending GPU runs are listed at th
    fire on the first two frames and report airbag and windshield crack at 0 ms. This is a real
    model error, identical on the training-pipeline frames.
 
-## VLM crash reports and the large encoder (`reports/m4/results.md`, `reports/m3/results.md`)
+## VLM crash reports (`reports/m4/results.md`, `reports/m4/paired.md`)
 
-13. **Zero-shot Qwen3.5-4B times airbag deployment best, but misplaces impact** (46 test clips,
-    t0 unknown, 24 frames at 8 ms):
-    - parse rate 1.00, no schema issues, no fire/leak hallucination;
-    - airbag onset hit@16 0.75 (CI 0.55–0.90), vs blind 0.35 and the best probe 0.70
-      (SigLIP 2 so400m). Predicted times vary per clip, so this is not a copied prior;
-    - impact onset hit@16 0.20 (median error 40 ms), below the blind baseline (0.45): the model
-      tends to put the impact tens of ms after the first frame;
-    - test-type accuracy 0.37 (hard from cabin views); 11 % of event claims contradict the labels;
-    - 104 s per clip on a free T4 (slow fallback kernels for its linear-attention layers).
-14. **The larger SigLIP 2 encoder (so400m) changes little**: airbag probe 0.70 (base 0.60),
-    impact 0.45 (base 0.55, ResNet-50 0.75); all within overlapping intervals at 23 test tests.
+All VLMs: 46 test clips, t0 unknown, 24 frames at 8 ms, the same crops as the probes. Paired
+bootstrap over tests against the blind baseline.
+
+13. **VLMs beat the timing prior at 8 ms, not at 16 ms.**
+    - Airbag onset, hit@8 vs blind 0.25: Qwen3.5-4B 0.70, Qwen3-VL-8B 0.90, Qwen3.5-4B LoRA
+      0.80; all three intervals exclude zero. At hit@16 none differs significantly from the
+      blind 0.75.
+    - Impact onset: zero-shot models misplace it (Qwen3.5-4B hit@16 0.20, Qwen3-VL-8B 0.40, both
+      significantly below the blind 0.75). LoRA: hit@8 0.65 vs 0.35 (significant), hit@16 0.90.
+      LoRA's impact predictions take only 4 distinct values, so part of this gain is a
+      better-calibrated prior rather than reading the frames.
+    - Head contact: LoRA 0.56 vs 0.22 at hit@8 (interval touches zero); Qwen3-VL-8B is
+      significantly worse than blind at hit@16 (0.17 vs 0.67).
+14. **Report quality.** Parse rate 1.00 for all three models. Test-type accuracy 0.37 / 0.48 /
+    0.46 (4B zero-shot / 8B / LoRA). Qwen3-VL-8B claims fire or a leak in 7 % of clips (none
+    occurs) and 25 % of its event claims contradict the labels; LoRA has the fewest
+    contradicting claims (9 %) and no fire claims. About 105-140 s per clip on a free T4.
+15. **LoRA was under-trained.** Kaggle T4 x2, without the fast linear-attention kernels:
+    20 of 183 planned optimiser steps (160 of 488 examples, stopped by the 5.5 h budget).
+    Training loss 0.53 → 0.07, validation loss 0.061. A full run and the learning curve
+    (25 / 50 % of the training tests) are still open.
+16. **The larger SigLIP 2 encoder (so400m) changes little**: airbag probe 0.70 (base 0.60),
+    impact 0.45 (base 0.55, ResNet-50 0.75); none beats the blind baseline.
 
 ## Pending (needs a GPU; cells in docs/COLAB.md)
 
-- Qwen3-VL-8B zero-shot reports (M4), LoRA fine-tuning and learning curve (M5)
+- A full LoRA run (all 3 epochs) and the LoRA learning curve (M5), e.g. on an L4/A100
 - VLM ablations (frames, resolution, prompt) and VLM severity vs crush/HIC (M6)
 
 ## Physics ground truth from vehicle sensors (`reports/physics/`)
@@ -72,7 +93,7 @@ crash tests, so confidence intervals are wide. Pending GPU runs are listed at th
    metrics (tier C) is confirmed, and the physics time replaces it.
 10. **Frame-appearance features cannot find the kinematic turning point**
     (`reports/physics/probe_results.md`). Linear probes trained on the measured time reach
-    hit@16 of 0.15-0.20 on test, below the blind baseline even without the clock (0.35).
+    hit@16 of 0.15-0.20 on test, below the blind baseline even without the clock (0.50).
     Whole-image motion energy (tried on the training split only) fails too: glass fragments,
     airbag smoke and dummy motion swamp the vehicle's own motion. Maximum crush is where the
     vehicle's velocity is zero. Measuring it from video needs tracking of the body (e.g. the

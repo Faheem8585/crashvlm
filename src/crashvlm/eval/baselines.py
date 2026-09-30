@@ -47,10 +47,16 @@ def decode_all(curves, gts, thr, mc, crop=None) -> dict:
 
 class Blind:
     """Median training onset per (event, config, role), both as absolute time (t0 known) and
-    as time since the clip's first frame (t0 unknown); predicts 'absent' if the event occurs in
-    fewer than half of the training clips."""
+    as time since the first frame shown (t0 unknown); predicts 'absent' if the event occurs in
+    fewer than half of the training clips.
 
-    def __init__(self, train, clip_start: dict[str, float]):
+    For t0 unknown, pass ``train_crop`` (the same random start crops, drawn for the training
+    clips). The prior is then measured from the cropped start, exactly like a model trained on
+    cropped clips. Without it, the prior is measured from the uncropped start and is late by
+    the mean crop (about 20 ms for a 0-40 ms jitter), which understates the baseline."""
+
+    def __init__(self, train, clip_start: dict[str, float], train_crop: dict | None = None):
+        train_crop = train_crop or {}
         self.abs, self.rel = {}, {}
         groups: dict = {}
         for g in train:
@@ -62,7 +68,11 @@ class Blind:
                 continue
             timed = [g for g in pos if g.timing_ok] or pos
             self.abs[key] = float(np.median([g.t_ms for g in timed]))
-            self.rel[key] = float(np.median([g.t_ms - clip_start[g.clip_id] for g in timed]))
+            self.rel[key] = float(
+                np.median(
+                    [g.t_ms - clip_start[g.clip_id] - train_crop.get(g.clip_id, 0.0) for g in timed]
+                )
+            )
 
     def predict(self, gts, clip_start, crop=None) -> dict:
         out = {}

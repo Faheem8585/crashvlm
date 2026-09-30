@@ -1,0 +1,12 @@
+\begin{tabular}{llcccccc}
+\toprule
+Event & $k$ & Blind & ResNet-50 probe & SigLIP 2-So400m probe & Qwen3.5-4B & Qwen3-VL-8B & Qwen3.5-4B LoRA \\
+\midrule
+Impact & 8 & 0.35 & 0.45 & 0.20 & 0.20 & 0.20 & 0.65$^{\uparrow}$ \\
+Impact & 16 & 0.75 & 0.75 & 0.45$^{\downarrow}$ & 0.20$^{\downarrow}$ & 0.40$^{\downarrow}$ & 0.90 \\
+Airbag & 8 & 0.25 & 0.30 & 0.55 & 0.70$^{\uparrow}$ & 0.90$^{\uparrow}$ & 0.80$^{\uparrow}$ \\
+Airbag & 16 & 0.75 & 0.45 & 0.70 & 0.75 & 0.90 & 0.90 \\
+Head contact & 8 & 0.22 & 0.22 & 0.17 & 0.33 & 0.11 & 0.56 \\
+Head contact & 16 & 0.67 & 0.44 & 0.50 & 0.39 & 0.17$^{\downarrow}$ & 0.83 \\
+\bottomrule
+\end{tabular}
